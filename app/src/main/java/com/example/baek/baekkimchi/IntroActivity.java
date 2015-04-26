@@ -20,7 +20,7 @@ public class IntroActivity extends Activity {
         setContentView(R.layout.activity_intro);
 
         // Animation 객체를 선언한 후 타겟 위젯에서 startAnimation
-        ImageView mAnimTarget = (ImageView)findViewById(R.id.img_intro);
+        ImageView mAnimTarget = (ImageView)findViewById(R.id.imgview_intro);
         Animation anim = new TranslateAnimation(0, 200, 0, 0);
         anim.setDuration(1000);
         mAnimTarget.startAnimation(anim);
