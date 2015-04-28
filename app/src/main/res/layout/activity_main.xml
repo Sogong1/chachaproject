@@ -106,8 +106,9 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:background="@drawable/button"
-                    android:layout_weight="3"
-                    android:text="넘어가기"/>
+                    android:layout_weight="5"
+                    android:text="넘어가기"
+                    android:textColor="#ffffff"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
@@ -117,8 +118,9 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:background="@drawable/button"
-                    android:layout_weight="3"
-                    android:text="OK"/>
+                    android:layout_weight="5"
+                    android:text="OK"
+                    android:textColor="#ffffff"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"

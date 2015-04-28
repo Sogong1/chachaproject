@@ -1,23 +1,27 @@
 package com.example.baek.baekkimchi;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private Button bt_ok;
     private Button bt_skip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         bt_ok = (Button) findViewById(R.id.btn_ok);
         bt_ok.setOnClickListener(new View.OnClickListener() {
