@@ -9,12 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 
 
 public class MainActivity extends Activity {
 
     private Button bt_ok;
     private Button bt_skip;
+    private EditText input_age, input_cost;
+    private RadioGroup input_gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        input_age = (EditText) findViewById(R.id.input_age);
+        input_gender = (RadioGroup) findViewById(R.id.input_gender);
+        input_cost = (EditText) findViewById(R.id.input_cost);
 
         bt_ok = (Button) findViewById(R.id.btn_ok);
         bt_ok.setOnClickListener(new View.OnClickListener() {
