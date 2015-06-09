@@ -11,12 +11,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
 
     private Button bt_ok;
     private Button bt_skip;
+    private TextView testBtnOK, testBtnSkip;
     private EditText input_age, input_cost;
     private RadioGroup input_gender;
 
@@ -29,23 +32,11 @@ public class MainActivity extends Activity {
         input_age = (EditText) findViewById(R.id.input_age);
         input_gender = (RadioGroup) findViewById(R.id.input_gender);
         input_cost = (EditText) findViewById(R.id.input_cost);
+        testBtnOK = (TextView)findViewById(R.id.testBtnOK);
+        testBtnSkip = (TextView)findViewById(R.id.testBtnSkip);
 
         bt_ok = (Button) findViewById(R.id.btn_ok);
-        bt_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ListActivity.class));
-                finish();
-            }
-        });
         bt_skip = (Button) findViewById(R.id.btn_skip);
-        bt_skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ListActivity.class));
-                finish();
-            }
-        });
     }
 
 
@@ -69,5 +60,17 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void clickOKMethod(View v) {
+            testBtnOK.setText("OK: true");
+            startActivity(new Intent(MainActivity.this, ListActivity.class));
+            finish();
+        }
+
+    public void clickSkipMethod(View v) {
+        testBtnSkip.setText("Skip: true");
+        startActivity(new Intent(MainActivity.this, ListActivity.class));
+        finish();
     }
 }
