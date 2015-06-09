@@ -93,7 +93,12 @@ public class MainActivity extends Activity {
         Toast.makeText(this, "나이 : " + age + "\n성별 : " + gender + "\n금액 : " + cost, Toast.LENGTH_SHORT).show();
 
         testBtnOK.setText("OK: true");
-        startActivity(new Intent(MainActivity.this, ListActivity.class));
+        Intent intent = new Intent(MainActivity.this, ListActivity.class);
+        intent.putExtra("age", age);
+        intent.putExtra("gender", gender);
+        intent.putExtra("cost", cost);
+
+        startActivity(intent);
         finish();
 
         return 0;

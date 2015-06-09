@@ -1,4 +1,4 @@
-package Fragment;
+package com.example.baek.baekkimchi.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,24 +9,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.baek.baekkimchi.Connection.ConnectionManager;
 import com.example.baek.baekkimchi.DetailViewActivity;
 import com.example.baek.baekkimchi.R;
 
 import java.util.ArrayList;
 
-import dataset.DataSet;
+import com.example.baek.baekkimchi.dataset.DataSet;
 
 
-public class Ranklist extends Fragment {
+public class Userlist extends Fragment {
 
     private ListView mListView;
     private CustomAdapter mAdapter;
+    private String query;
+    private Bundle bundle;
+    private ConnectionManager mConnectionManager;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = getArguments();
+        query = bundle.getString("query");
+        mConnectionManager = new ConnectionManager(query);
+        mConnectionManager.execute();
     }
 
     @Override
@@ -88,10 +98,21 @@ public class Ranklist extends Fragment {
             // 리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 converView가 null인 상태로 들어 옴
             if ( convertView == null ) {
                 // view가 null일 경우 커스텀 레이아웃을 얻어 옴
+//                LinearLayout ll_cardLayout = (LinearLayout) convertView.findViewById(R.id.ll_cardLayout);
+//                LinearLayout.LayoutParams lparam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//
+//                if (position > 0) {
+//                    lparam.height = 200;
+//                    ll_cardLayout.setLayoutParams(lparam);
+//                }
+
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.item_card, parent, false);
 
                 // TextView에 현재 position의 문자열 추가
+                TextView Car_rank = (TextView) convertView.findViewById(R.id.Car_rank);
+                Car_rank.setText(position + 1 + "");
+
                 TextView Car_name = (TextView) convertView.findViewById(R.id.Car_name);
                 Car_name.setText(mDataset.get(position).getName());
 

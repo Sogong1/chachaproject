@@ -1,4 +1,4 @@
-package dataset;
+package com.example.baek.baekkimchi.dataset;
 
 /**
  * Created by Baek on 2015-04-27.

@@ -1,4 +1,4 @@
-package Fragment;
+package com.example.baek.baekkimchi.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +17,10 @@ import com.example.baek.baekkimchi.R;
 
 import java.util.ArrayList;
 
-import dataset.DataSet;
+import com.example.baek.baekkimchi.dataset.DataSet;
 
 
-public class Userlist extends Fragment {
+public class Ranklist extends Fragment {
 
     private ListView mListView;
     private CustomAdapter mAdapter;
@@ -88,6 +88,9 @@ public class Userlist extends Fragment {
             // 리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 converView가 null인 상태로 들어 옴
             if ( convertView == null ) {
                 // view가 null일 경우 커스텀 레이아웃을 얻어 옴
+//                TextView Car_rank = (TextView) convertView.findViewById(R.id.Car_rank);
+//                Car_rank.setText(position+1+"");
+
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.item_card, parent, false);
 

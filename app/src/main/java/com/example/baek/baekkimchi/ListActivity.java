@@ -1,6 +1,7 @@
 package com.example.baek.baekkimchi;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -10,8 +11,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import Fragment.Ranklist;
-import Fragment.Userlist;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.util.Vector;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import com.example.baek.baekkimchi.Fragment.Ranklist;
+import com.example.baek.baekkimchi.Fragment.Userlist;
 
 
 public class ListActivity extends FragmentActivity implements View.OnClickListener {
@@ -24,11 +50,21 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
 
     private Button bt_return;
     private Button bt_oneFragment, bt_twoFragment;
+    private int age, cost;
+    private String gender;
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        Intent intent = getIntent();
+        age = intent.getExtras().getInt("age");
+        gender = intent.getExtras().getString("gender");
+        cost = intent.getExtras().getInt("cost");
+
+        query = "select car_name, car_model, price from car where price >= \""+cost+"\"-100 or price <= \""+cost+"\"+100";
 
         bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
         bt_oneFragment.setOnClickListener(this);
@@ -73,7 +109,10 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
 
         switch (idx) {
             case FRAGMENT_ONE:
+                Bundle bundle = new Bundle();
+                bundle.putString("query", query);
                 newFragment = new Userlist();
+                newFragment.setArguments(bundle);
                 break;
             case FRAGMENT_TWO:
                 newFragment = new Ranklist();
