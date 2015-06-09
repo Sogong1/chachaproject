@@ -2,6 +2,7 @@ package com.example.baek.baekkimchi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,25 +11,41 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.ViewFlipper;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class IntroActivity extends Activity {
-
+    private Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
         // Animation 객체를 선언한 후 타겟 위젯에서 startAnimation
-        ImageView mAnimTarget = (ImageView)findViewById(R.id.imgview_intro);
-        Animation anim = new TranslateAnimation(0, 200, 0, 0);
-        anim.setDuration(1000);
-        mAnimTarget.startAnimation(anim);
+        // 이미지들이 담긴 컨테이너
+        final ViewFlipper vf = (ViewFlipper) findViewById(R.id.view_flipper);
 
-        // Animation을 정의한 xml파일을 로드한 후
-        Animation flowAnimation;
-        flowAnimation = AnimationUtils.loadAnimation(IntroActivity.this, R.anim.translate);
-        mAnimTarget.startAnimation(flowAnimation);
+        // 타이머를 이용하여 0.5초 마다 다음 이미지를 보여줌
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                // UI를 손대기 위해서는 runOnUiThread를 사용해야 함
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 다음 이미지 표시
+                        vf.showNext();
+                    }
+                });
+            }
+        }, 500, 500);
+
+
 
         Thread thread = new Thread(){
 
@@ -36,6 +53,7 @@ public class IntroActivity extends Activity {
             public void run() {
                 // TODO Auto-generated method stub
                 try {
+
                     sleep(3000);
                     startActivity(new Intent(IntroActivity.this, MainActivity.class));
                     finish();
@@ -50,6 +68,13 @@ public class IntroActivity extends Activity {
 
         thread.start();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
+
 
 
     @Override

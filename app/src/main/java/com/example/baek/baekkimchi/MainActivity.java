@@ -63,15 +63,41 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void clickOKMethod(View v) {
-        int age = Integer.parseInt(input_age.getText().toString());
-//        input_gender.getch
-        Toast.makeText(this, "Incorrect your ID or Password", Toast.LENGTH_SHORT).show();
+    public int clickOKMethod(View v) {
+        int age=0, cost=0;
+        String gender="";
+
+        try {
+            age = Integer.parseInt(input_age.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "나이를 정확히 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+
+        if (input_gender.getCheckedRadioButtonId() == R.id.input_male)
+            gender = "남자";
+        else if (input_gender.getCheckedRadioButtonId()==R.id.input_female)
+            gender = "여자";
+        else {
+            Toast.makeText(this, "성별을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+
+        try {
+            cost = Integer.parseInt(input_cost.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "금액을 정확히 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+
+        Toast.makeText(this, "나이 : " + age + "\n성별 : " + gender + "\n금액 : " + cost, Toast.LENGTH_SHORT).show();
 
         testBtnOK.setText("OK: true");
         startActivity(new Intent(MainActivity.this, ListActivity.class));
         finish();
-        }
+
+        return 0;
+    }
 
     public void clickSkipMethod(View v) {
         testBtnSkip.setText("Skip: true");

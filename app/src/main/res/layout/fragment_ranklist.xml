@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="20dp"
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+    android:background="#FFFF"
     android:orientation="vertical"
-    android:tag="main activity layout container" >
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:scrollbars="vertical"
+    <ListView
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
-
+        android:scrollbars="vertical"
+        android:id="@+id/rank_list"/>
 
 </LinearLayout>

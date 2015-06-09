@@ -23,15 +23,16 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     public final static int FRAGMENT_TWO = 1;
 
     private Button bt_return;
+    private Button bt_oneFragment, bt_twoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        Button bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
+        bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
         bt_oneFragment.setOnClickListener(this);
-        Button bt_twoFragment = (Button) findViewById(R.id.bt_twoFragment);
+        bt_twoFragment = (Button) findViewById(R.id.bt_twoFragment);
         bt_twoFragment.setOnClickListener(this);
 
         bt_return = (Button) findViewById(R.id.btn_return);
@@ -93,10 +94,15 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
             case R.id.bt_oneFragment:
                 mCurrentFragmentIndex = FRAGMENT_ONE;
                 fragmentReplace(mCurrentFragmentIndex);
+                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_select);
+                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_unselc);
+
                 break;
             case R.id.bt_twoFragment:
                 mCurrentFragmentIndex = FRAGMENT_TWO;
                 fragmentReplace(mCurrentFragmentIndex);
+                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_unselc);
+                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_select);
                 break;
 
         }

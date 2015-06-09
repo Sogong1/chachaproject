@@ -15,26 +15,21 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/title_background"
-            android:text="1" />
+            android:background="@drawable/title_mylist_select" />
 
         <Button
             android:id="@+id/bt_twoFragment"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/title_unselect_background"
-            android:text="2" />
+            android:background="@drawable/title_rec_unselc" />
         </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
         android:background="@drawable/background_normal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"></LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -44,6 +39,8 @@
                 android:id="@+id/ll_fragment"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:orientation="horizontal"
                 android:layout_weight="12" />
             <LinearLayout
@@ -87,10 +84,6 @@
             </LinearLayout>
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"></LinearLayout>
     </LinearLayout>
 
 
