@@ -2,6 +2,8 @@ package com.example.baek.baekkimchi.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -98,16 +100,21 @@ public class Userlist extends Fragment {
             // 리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 converView가 null인 상태로 들어 옴
             if ( convertView == null ) {
                 // view가 null일 경우 커스텀 레이아웃을 얻어 옴
-//                LinearLayout ll_cardLayout = (LinearLayout) convertView.findViewById(R.id.ll_cardLayout);
-//                LinearLayout.LayoutParams lparam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//
-//                if (position > 0) {
-//                    lparam.height = 200;
-//                    ll_cardLayout.setLayoutParams(lparam);
-//                }
-
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.item_card, parent, false);
+
+                LinearLayout ll_cardLayout = (LinearLayout) convertView.findViewById(R.id.ll_cardLayout);
+                LinearLayout.LayoutParams lparam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+                GradientDrawable shape =  new GradientDrawable();
+                shape.setCornerRadius(30);
+
+                if (position > 0) {
+                    lparam.height = 300;
+                    ll_cardLayout.setLayoutParams(lparam);
+                } else {
+                    shape.setColor(Color.parseColor("#FF7E7E"));
+                }
 
                 // TextView에 현재 position의 문자열 추가
                 TextView Car_rank = (TextView) convertView.findViewById(R.id.Car_rank);
@@ -122,26 +129,14 @@ public class Userlist extends Fragment {
                 TextView Car_price = (TextView) convertView.findViewById(R.id.Car_price);
                 Car_price.setText(mDataset.get(position).getPrice()+"");
 
-                // 버튼을 터치 했을 때 이벤트 발생
-                Button Car_detail = (Button) convertView.findViewById(R.id.Car_detail);
-                Car_detail.setOnClickListener(new View.OnClickListener() {
+                // 리스트 아이템을 터치 했을 때 이벤트 발생
+                convertView.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-
                         startActivity(new Intent(getActivity(), DetailViewActivity.class));
                     }
                 });
-
-                // 리스트 아이템을 터치 했을 때 이벤트 발생
-//                convertView.setOnClickListener(new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
-//                        // 터치 시 해당 아이템 이름 출력
-//                        Toast.makeText(context, "리스트 클릭 : "+m_List.get(pos), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
             }
 

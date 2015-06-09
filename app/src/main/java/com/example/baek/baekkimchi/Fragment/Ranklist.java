@@ -2,6 +2,8 @@ package com.example.baek.baekkimchi.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.baek.baekkimchi.Connection.ConnectionManager;
 import com.example.baek.baekkimchi.DetailViewActivity;
+import com.example.baek.baekkimchi.MainActivity;
 import com.example.baek.baekkimchi.R;
 
 import java.util.ArrayList;
@@ -24,9 +29,14 @@ public class Ranklist extends Fragment {
 
     private ListView mListView;
     private CustomAdapter mAdapter;
+    private Bundle bundle;
+    private boolean isSkip;
+    private Button bt_FragmentOne;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = getArguments();
+        isSkip = bundle.getBoolean("isSkip");
     }
 
     @Override
@@ -34,6 +44,16 @@ public class Ranklist extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_ranklist, container, false);
+        View tempView = inflater.inflate(R.layout.activity_list, container, false);
+
+        bt_FragmentOne = (Button) tempView.findViewById(R.id.bt_oneFragment);
+        bt_FragmentOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
+            }
+        });
 
         mListView = (ListView) v.findViewById(R.id.rank_list);
 
@@ -88,13 +108,26 @@ public class Ranklist extends Fragment {
             // 리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 converView가 null인 상태로 들어 옴
             if ( convertView == null ) {
                 // view가 null일 경우 커스텀 레이아웃을 얻어 옴
-//                TextView Car_rank = (TextView) convertView.findViewById(R.id.Car_rank);
-//                Car_rank.setText(position+1+"");
-
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.item_card, parent, false);
 
+                LinearLayout ll_cardLayout = (LinearLayout) convertView.findViewById(R.id.ll_cardLayout);
+                LinearLayout.LayoutParams lparam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+                GradientDrawable shape =  new GradientDrawable();
+                shape.setCornerRadius(30);
+
+                if (position > 0) {
+                    lparam.height = 300;
+                    ll_cardLayout.setLayoutParams(lparam);
+                } else {
+                    ll_cardLayout.setBackgroundColor(Color.parseColor("#FF7E7E"));
+                }
+
                 // TextView에 현재 position의 문자열 추가
+                TextView Car_rank = (TextView) convertView.findViewById(R.id.Car_rank);
+                Car_rank.setText(position+1+"");
+
                 TextView Car_name = (TextView) convertView.findViewById(R.id.Car_name);
                 Car_name.setText(mDataset.get(position).getName());
 
@@ -104,26 +137,14 @@ public class Ranklist extends Fragment {
                 TextView Car_price = (TextView) convertView.findViewById(R.id.Car_price);
                 Car_price.setText(mDataset.get(position).getPrice()+"");
 
-                // 버튼을 터치 했을 때 이벤트 발생
-                Button Car_detail = (Button) convertView.findViewById(R.id.Car_detail);
-                Car_detail.setOnClickListener(new View.OnClickListener() {
+                // 리스트 아이템을 터치 했을 때 이벤트 발생
+                convertView.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-
                         startActivity(new Intent(getActivity(), DetailViewActivity.class));
                     }
                 });
-
-                // 리스트 아이템을 터치 했을 때 이벤트 발생
-//                convertView.setOnClickListener(new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
-//                        // 터치 시 해당 아이템 이름 출력
-//                        Toast.makeText(context, "리스트 클릭 : "+m_List.get(pos), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
             }
 

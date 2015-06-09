@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private Button bt_ok;
-    private Button bt_skip;
     private TextView testBtnOK, testBtnSkip;
     private EditText input_age, input_cost;
     private RadioGroup input_gender;
@@ -36,8 +34,6 @@ public class MainActivity extends Activity {
         testBtnOK = (TextView)findViewById(R.id.testBtnOK);
         testBtnSkip = (TextView)findViewById(R.id.testBtnSkip);
 
-        bt_ok = (Button) findViewById(R.id.btn_ok);
-        bt_skip = (Button) findViewById(R.id.btn_skip);
     }
 
 
@@ -94,6 +90,7 @@ public class MainActivity extends Activity {
 
         testBtnOK.setText("OK: true");
         Intent intent = new Intent(MainActivity.this, ListActivity.class);
+        intent.putExtra("isSkip", false);
         intent.putExtra("age", age);
         intent.putExtra("gender", gender);
         intent.putExtra("cost", cost);
@@ -106,7 +103,10 @@ public class MainActivity extends Activity {
 
     public void clickSkipMethod(View v) {
         testBtnSkip.setText("Skip: true");
-        startActivity(new Intent(MainActivity.this, ListActivity.class));
+        Intent intent = new Intent(MainActivity.this, ListActivity.class);
+        intent.putExtra("isSkip", true);
+
+        startActivity(intent);
         finish();
     }
 }

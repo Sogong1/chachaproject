@@ -53,6 +53,7 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     private int age, cost;
     private String gender;
     private String query;
+    private boolean isSkip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.activity_list);
 
         Intent intent = getIntent();
+        isSkip = intent.getExtras().getBoolean("isSkip");
         age = intent.getExtras().getInt("age");
         gender = intent.getExtras().getString("gender");
         cost = intent.getExtras().getInt("cost");
@@ -80,8 +82,12 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
             }
         });
 
-        mCurrentFragmentIndex = FRAGMENT_ONE;
-
+        if (isSkip) {
+            mCurrentFragmentIndex = FRAGMENT_TWO;
+        }
+        else {
+            mCurrentFragmentIndex = FRAGMENT_ONE;
+        }
         fragmentReplace(mCurrentFragmentIndex);
     }
 
@@ -109,13 +115,22 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
 
         switch (idx) {
             case FRAGMENT_ONE:
-                Bundle bundle = new Bundle();
-                bundle.putString("query", query);
+                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_select);
+                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_unselc);
+
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("query", query);
                 newFragment = new Userlist();
-                newFragment.setArguments(bundle);
+                newFragment.setArguments(bundle1);
                 break;
             case FRAGMENT_TWO:
+                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_unselc);
+                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_select);
+
+                Bundle bundle2 = new Bundle();
+                bundle2.putBoolean("isSkip", true);
                 newFragment = new Ranklist();
+                newFragment.setArguments(bundle2);
                 break;
             default:
                 Log.d(TAG, "Unhandle case");
@@ -133,17 +148,11 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
             case R.id.bt_oneFragment:
                 mCurrentFragmentIndex = FRAGMENT_ONE;
                 fragmentReplace(mCurrentFragmentIndex);
-                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_select);
-                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_unselc);
-
                 break;
             case R.id.bt_twoFragment:
                 mCurrentFragmentIndex = FRAGMENT_TWO;
                 fragmentReplace(mCurrentFragmentIndex);
-                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_unselc);
-                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_select);
                 break;
-
         }
 
     }
