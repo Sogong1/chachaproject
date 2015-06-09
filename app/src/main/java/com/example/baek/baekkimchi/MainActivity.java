@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -63,9 +64,13 @@ public class MainActivity extends Activity {
     }
 
     public void clickOKMethod(View v) {
-            testBtnOK.setText("OK: true");
-            startActivity(new Intent(MainActivity.this, ListActivity.class));
-            finish();
+        int age = Integer.parseInt(input_age.getText().toString());
+//        input_gender.getch
+        Toast.makeText(this, "Incorrect your ID or Password", Toast.LENGTH_SHORT).show();
+
+        testBtnOK.setText("OK: true");
+        startActivity(new Intent(MainActivity.this, ListActivity.class));
+        finish();
         }
 
     public void clickSkipMethod(View v) {

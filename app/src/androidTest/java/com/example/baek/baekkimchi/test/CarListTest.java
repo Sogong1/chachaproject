@@ -1,3 +1,5 @@
+package com.example.baek.baekkimchi.test;
+
 /**
  * Created by Baek on 2015-06-08.
  */
