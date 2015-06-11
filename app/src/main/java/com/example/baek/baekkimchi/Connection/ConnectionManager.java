@@ -3,6 +3,8 @@ package com.example.baek.baekkimchi.Connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.baek.baekkimchi.dataset.DataSet;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -23,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -48,6 +51,7 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     private String carNameList[];
     private String modelList[];
     private String priceList[];
+    private ArrayList<DataSet> xmlList;
 
     HttpEntity entityResponse;
     InputStream im;
@@ -109,7 +113,9 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
                 }
             }
             im.close();
-            Log.i("XML result: ",message);
+            Log.i("XML result1 : ",message);
+
+            setXmlList(parseXML(message));
 
             return message;
         }catch (UnsupportedEncodingException e) {
@@ -121,12 +127,12 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         return null; //오류시 error
     }
 
-    public void parseXML(String xml){
+    public ArrayList<DataSet> parseXML(String xml){
         //get XML and parse it. After that draw list.
 
         String temp = xml.substring(0,xml.length());
 
-        System.out.print(temp);
+//        System.out.print(temp);
         StringReader sr = new StringReader(temp);
         InputSource is = new InputSource(sr);
 
@@ -142,42 +148,62 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         }
 
         NodeList child = result.item(0).getChildNodes();
-        System.out.println(child.getLength());
+//        System.out.println(child.getLength());
         int max = child.getLength();
-//        carNameList = new String[max];
-//        modelList = new String[max];
-//        priceList = new String[max];
+        carNameList = new String[max];
+        modelList = new String[max];
+        priceList = new String[max];
 
+        ArrayList<DataSet> xmllist = new ArrayList<DataSet>();
 
         for(int i = 0; i< child.getLength();i++){
             NodeList childList = child.item(i).getChildNodes();
             for(int j = 0;j<childList.getLength();j++){
                 String element = childList.item(j).getNodeName();
-                System.out.print(element);
+//                System.out.print(element);
                 String text = childList.item(j).getTextContent();
-                System.out.print(text);
-
-                if(element.equals("name"))
-                    carNameList[i] = text;
-                else if(element.equals("model"))
-                    modelList[i] = text;
-                else if(element.equals("price"))
+//                System.out.print(text);
+//
+                if(element.equals("name")){
+//                    Log.i("XML text",text);
+                    carNameList[i] = text;}
+                else if(element.equals("model")){
+                    modelList[i] = text;}
+                else if(element.equals("price")){
                     priceList[i] = text;
+                }
             }
-//            Log.i("XMLTest "+i+": ", carNameList[i]);
-//            Log.i("XMLTest "+i+": ", modelList[i]);
-//            Log.i("XMLTest "+i+": ", priceList[i]);
-        }
+            Log.i("XMLTest "+i+": ", carNameList[i]);
+            Log.i("XMLTest "+i+": ", modelList[i]);
+            Log.i("XMLTest "+i+": ", priceList[i]);
 
-        // 리스트 추가
+            xmllist.add(new DataSet(carNameList[i], modelList[i], Integer.parseInt(priceList[i])));
+
+            Log.i("XMLTest_dataSet"+i,xmllist.get(i).getName());
+        }
+//
+//        xmllist[0] = carNameList;
+//        xmllist[1] = modelList;
+//        xmllist[2] = priceList;
+
+        return xmllist;
+    }
+
+    public void setXmlList(ArrayList<DataSet> list){
+        xmlList = list;
+
+    }
+
+    public ArrayList<DataSet> getXmlList() {
+        return xmlList;
     }
 
 
     protected void onPostExecute(String result){
         //작업 마친후 내용. UI는 여기서 변경할 것,
         super.onPostExecute(result);
-        Log.i("XML result: ",result);
-        parseXML(result);
+//        Log.i("XML result2 : ", result);
+//        setXmlList(parseXML(result));
     }
 
 }

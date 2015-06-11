@@ -1,5 +1,7 @@
 package com.example.baek.baekkimchi;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -48,12 +52,13 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     public final static int FRAGMENT_ONE = 0;
     public final static int FRAGMENT_TWO = 1;
 
-    private Button bt_return;
+    private Button bt_return, bt_filter;
     private Button bt_oneFragment, bt_twoFragment;
     private int age, cost;
     private String gender;
     private String query;
     private boolean isSkip;
+    private ArrayList<String> selectedFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +71,20 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         gender = intent.getExtras().getString("gender");
         cost = intent.getExtras().getInt("cost");
 
-        query = "select car_name, car_model, price from car where price >= \""+cost+"\"-100 or price <= \""+cost+"\"+100";
+        query = "select * from car where price >= \""+cost+"\"-100 or price <= \""+cost+"\"+100 LIMIT 10";
 
         bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
         bt_oneFragment.setOnClickListener(this);
         bt_twoFragment = (Button) findViewById(R.id.bt_twoFragment);
         bt_twoFragment.setOnClickListener(this);
+
+        bt_filter = (Button) findViewById(R.id.btn_filter);
+        bt_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAlertDialog();
+            }
+        });
 
         bt_return = (Button) findViewById(R.id.btn_return);
         bt_return.setOnClickListener(new View.OnClickListener() {
@@ -146,8 +159,14 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         switch (v.getId()) {
 
             case R.id.bt_oneFragment:
-                mCurrentFragmentIndex = FRAGMENT_ONE;
-                fragmentReplace(mCurrentFragmentIndex);
+                if(isSkip) {
+                    startActivity(new Intent(ListActivity.this, MainActivity.class));
+                    finish();
+                 }
+                else {
+                    mCurrentFragmentIndex = FRAGMENT_ONE;
+                    fragmentReplace(mCurrentFragmentIndex);
+                }
                 break;
             case R.id.bt_twoFragment:
                 mCurrentFragmentIndex = FRAGMENT_TWO;
@@ -178,5 +197,52 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setAlertDialog(){
+        final CharSequence[] items = {"Red", "Green", "Blue"};
+        final ArrayList<Integer> selectedItemIndexList = new ArrayList<Integer>();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
+
+        // 여기서 부터는 알림창의 속성 설정
+        builder.setTitle("색상을 선택하세요")        // 제목 설정
+
+
+                .setMultiChoiceItems(items, new boolean[]{false, false, false}, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked)
+                            selectedItemIndexList.add(which);
+                        else if (selectedItemIndexList.contains(which)) {
+                            selectedItemIndexList.remove(Integer.valueOf(which));
+                        }
+                    }
+                })
+                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    // 확인 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        if (selectedItemIndexList.size() != 0)
+                            for (int i = 0; i < selectedItemIndexList.size(); i++) {
+                                String filter = items[selectedItemIndexList.get(i)].toString();
+                                selectedFilter.add(filter);
+                                stringBuilder = stringBuilder.append(" "+filter);
+                            }
+                        Toast.makeText(getApplicationContext(), stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    // 취소 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();    // 알림창 객체 생성
+        dialog.show();    // 알림장 띄우기
     }
 }
