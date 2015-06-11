@@ -112,7 +112,6 @@ public class Ranklist extends Fragment {
             });
 
             if (position == 0) {
-                Log.i("position0:", position+"");
                 lparam.height = 500;
                 Car_rank.setTextSize(20);
                 Car_name.setTextSize(25);
@@ -122,6 +121,10 @@ public class Ranklist extends Fragment {
                 ll_cardLayout.setBackgroundColor(Color.parseColor("#FAED7D"));
             }
             else {
+                Car_rank.setTextSize(13);
+                Car_name.setTextSize(18);
+                Car_company.setTextSize(18);
+                Car_price.setTextSize(18);
                 ll_cardLayout.setLayoutParams(lparam);
                 ll_cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }

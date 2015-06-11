@@ -40,14 +40,9 @@ public class Userlist extends Fragment {
         bundle = getArguments();
         query = bundle.getString("query");
         mConnectionManager = new ConnectionManager(query);
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
+
                 mConnectionManager.execute();
 
-            }
-        });
-        thread1.start();
         Log.i("What first?", "fucks");
 
         try {
@@ -129,9 +124,7 @@ public class Userlist extends Fragment {
                     startActivity(new Intent(getActivity(), DetailViewActivity.class));
                 }
             });
-            Log.i("position:", position+"");
             if (position == 0) {
-                Log.i("position0:", position+"");
                 lparam.height = 500;
                 Car_rank.setTextSize(20);
                 Car_name.setTextSize(25);
@@ -141,6 +134,10 @@ public class Userlist extends Fragment {
                 ll_cardLayout.setBackgroundColor(Color.parseColor("#FAED7D"));
             }
             else {
+                Car_rank.setTextSize(13);
+                Car_name.setTextSize(18);
+                Car_company.setTextSize(18);
+                Car_price.setTextSize(18);
                 ll_cardLayout.setLayoutParams(lparam);
                 ll_cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }

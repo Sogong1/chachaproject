@@ -14,31 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Vector;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.example.baek.baekkimchi.Fragment.Ranklist;
 import com.example.baek.baekkimchi.Fragment.Userlist;
@@ -70,6 +46,8 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         age = intent.getExtras().getInt("age");
         gender = intent.getExtras().getString("gender");
         cost = intent.getExtras().getInt("cost");
+
+        selectedFilter = new ArrayList<>();
 
         query = "select * from car where price >= \""+cost+"\"-100 or price <= \""+cost+"\"+100 LIMIT 10";
 
@@ -120,7 +98,6 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
 
         // Commit the transaction
         transaction.commit();
-
     }
 
     private Fragment getFragment(int idx) {
@@ -173,9 +150,7 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 fragmentReplace(mCurrentFragmentIndex);
                 break;
         }
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,16 +175,15 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void setAlertDialog(){
-        final CharSequence[] items = {"Red", "Green", "Blue"};
+        final CharSequence[] itemsMap = {"회사", "이름", "모델", "타입", "엔진", "공급방식", "배기량", "연료", "연비", "탑승인원", "구동방식", "변속기", "가격", "최대토크", "최고출력"};
+        final CharSequence[] items = {"company_index", "car_name", "car_model", "type", "engene_type", "supply_method", "displacement", "fuel_type", "fuel_economy", "riding_personnal", "drive_type", "mission", "price", "max_token", "max_output"};
         final ArrayList<Integer> selectedItemIndexList = new ArrayList<Integer>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
         // 여기서 부터는 알림창의 속성 설정
-        builder.setTitle("색상을 선택하세요")        // 제목 설정
-
-
-                .setMultiChoiceItems(items, new boolean[]{false, false, false}, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setTitle("필터를 선택하세요")        // 제목 설정
+                .setMultiChoiceItems(itemsMap, new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked)
