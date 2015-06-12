@@ -41,7 +41,7 @@ public class Userlist extends Fragment {
         query = bundle.getString("query");
         mConnectionManager = new ConnectionManager(query);
 
-                mConnectionManager.execute();
+        mConnectionManager.execute();
 
         Log.i("What first?", "fucks");
 
@@ -124,23 +124,23 @@ public class Userlist extends Fragment {
                     startActivity(new Intent(getActivity(), DetailViewActivity.class));
                 }
             });
-            if (position == 0) {
-                lparam.height = 500;
-                Car_rank.setTextSize(20);
-                Car_name.setTextSize(25);
-                Car_company.setTextSize(25);
-                Car_price.setTextSize(25);
-                ll_cardLayout.setLayoutParams(lparam);
-                ll_cardLayout.setBackgroundColor(Color.parseColor("#FAED7D"));
-            }
-            else {
-                Car_rank.setTextSize(13);
-                Car_name.setTextSize(18);
-                Car_company.setTextSize(18);
-                Car_price.setTextSize(18);
-                ll_cardLayout.setLayoutParams(lparam);
-                ll_cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            }
+//            if (position == 0) {
+//                lparam.height = 500;
+//                Car_rank.setTextSize(20);
+//                Car_name.setTextSize(25);
+//                Car_company.setTextSize(25);
+//                Car_price.setTextSize(25);
+//                ll_cardLayout.setLayoutParams(lparam);
+//                ll_cardLayout.setBackgroundColor(Color.parseColor("#FAED7D"));
+//            }
+//            else {
+//                Car_rank.setTextSize(13);
+//                Car_name.setTextSize(18);
+//                Car_company.setTextSize(18);
+//                Car_price.setTextSize(18);
+//                ll_cardLayout.setLayoutParams(lparam);
+//                ll_cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+//            }
 
             return v;
         }

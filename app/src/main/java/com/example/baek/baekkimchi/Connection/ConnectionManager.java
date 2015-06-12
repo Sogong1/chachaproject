@@ -70,7 +70,7 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         // TODO Auto-generated method stub
         //이곳에서 UI를 변경하면 에러
 
-        url = "http://sogong.wink.ws/system/blank.php";
+        url = "http://172.200.153.146/system/blank.php";
         XMLMessage = "";    //final result XML
         message = "";       //temp message buffer
 

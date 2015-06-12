@@ -18,143 +18,174 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
+            android:orientation="vertical"
             android:background="@drawable/background_normal">
+            <TextView
+                android:id="@+id/text_intro"
+                android:text="@string/hello_world"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:paddingLeft="100dp"
+                android:paddingTop="15dp"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/explain_background"/>
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"></LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="4"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/text_intro"
-                    android:text="@string/hello_world"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="3"
-                    android:background="@drawable/explain_background"/>
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/text_background"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="나이"/>
-                    <EditText
-                        android:id="@+id/input_age"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="8"
-                        android:text="15"/>
-                    </LinearLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"></LinearLayout>
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/text_background"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="성별" />
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    >
 
-                    <RadioGroup
-                        android:id="@+id/input_gender"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="5"
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_background"
+                        android:layout_marginBottom="3dp"
                         android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/input_male"
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="fill_parent"
                             android:layout_weight="1"
-                            android:text="남자" />
-
-                        <RadioButton
-                            android:id="@+id/input_female"
+                            android:textColor="#FFFFFF"
+                            android:gravity="center"
+                            android:background="@drawable/label_black"
+                            android:text="나이"/>
+                        <EditText
+                            android:id="@+id/input_age"
                             android:layout_width="0dp"
                             android:layout_height="fill_parent"
-                            android:layout_weight="1"
-                            android:text="여자"
-                            android:checked="true"/>
-
-                        </RadioGroup>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/text_background"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                            android:layout_weight="5"
+                            android:gravity="center"
+                            android:background="@drawable/label_white"
+                            android:text="15"/>
+                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="금액"/>
-                    <EditText
-                        android:id="@+id/input_cost"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="8"
-                        android:text="2100"/>s
+                        android:background="@drawable/text_background"
+                        android:layout_marginBottom="3dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:textColor="#FFFFFF"
+                            android:gravity="center"
+                            android:background="@drawable/label_black"
+                            android:text="성별" />
+
+                        <RadioGroup
+                            android:id="@+id/input_gender"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="5"
+                            android:background="@drawable/label_white"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/input_male"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+
+                                android:text="남자" />
+
+                            <RadioButton
+                                android:id="@+id/input_female"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:text="여자"
+                                android:checked="true"/>
+
+                            </RadioGroup>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_background"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/label_black"
+                            android:text="금액"
+                            android:gravity="center"
+                            android:textColor="#FFFFFF"/>
+                        <EditText
+                            android:id="@+id/input_cost"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="5"
+                            android:gravity="center"
+                            android:background="@drawable/label_white"
+                            android:text="2100"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".5"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"/>
+
+                        <Button
+                            android:id="@+id/btn_skip"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/button"
+                            android:layout_weight="5"
+                            android:text="넘어가기        "
+                            android:textColor="#ffffff"
+                            android:onClick="clickSkipMethod"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"/>
+                        <Button
+                            android:id="@+id/btn_ok"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/button"
+                            android:layout_weight="5"
+                            android:text="OK        "
+                            android:textColor="#ffffff"
+                            android:onClick="clickOKMethod"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".5"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
-
-                    <Button
-                        android:id="@+id/btn_skip"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:background="@drawable/button"
-                        android:layout_weight="5"
-                        android:text="넘어가기"
-                        android:textColor="#ffffff"
-                        android:onClick="clickSkipMethod"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
-                    <Button
-                        android:id="@+id/btn_ok"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:background="@drawable/button"
-                        android:layout_weight="5"
-                        android:text="OK"
-                        android:textColor="#ffffff"
-                        android:onClick="clickOKMethod"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"/>
-
-                </LinearLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"></LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"></LinearLayout>
         </LinearLayout>
 
 
