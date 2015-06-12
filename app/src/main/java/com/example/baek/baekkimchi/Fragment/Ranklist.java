@@ -11,13 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.baek.baekkimchi.Connection.ConnectionManager;
 import com.example.baek.baekkimchi.DetailViewActivity;
@@ -34,22 +37,58 @@ public class Ranklist extends Fragment {
     private ListView mListView;
     private CustomAdapter mAdapter;
     private Bundle bundle;
+    private String query;
     private boolean isSkip;
+    private ConnectionManager mConnectionManager;
+    private ArrayList<DataSet> temp;
     private ArrayList<DataSet> DatasetList;
+    private ArrayAdapter<CharSequence>  selected_age;
+    private ArrayAdapter<CharSequence>  selected_gender;
+    private String query_age;
+    private String query_gender;
+
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
         isSkip = bundle.getBoolean("isSkip");
-    }
+        LinearLayout comboBox = (LinearLayout)getActivity().findViewById(R.id.recommend_combo);
+        comboBox.setVisibility(View.VISIBLE);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+        Spinner age_combo = (Spinner) getActivity().findViewById(R.id.age_combo);
+        Spinner gender_combo = (Spinner) getActivity().findViewById(R.id.gender_combo);
+        age_combo.setPrompt("나이를 입력해주세요.");
+        gender_combo.setPrompt("성별을 선택해주세요.");
 
-        View v = inflater.inflate(R.layout.fragment_ranklist, container, false);
+        selected_age = ArrayAdapter.createFromResource(getActivity(), R.array.age, android.R.layout.simple_spinner_item);
 
-        mListView = (ListView) v.findViewById(R.id.rank_list);
+        selected_age.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        age_combo.setAdapter(selected_age);
+        age_combo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(),
+                        selected_age.getItem(position) + "을 선택 했습니다.", Toast.LENGTH_SHORT).show();
+                setAge(selected_age.getItem(position).toString());
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        selected_gender = ArrayAdapter.createFromResource(getActivity(), R.array.gender, android.R.layout.simple_spinner_item);
+
+        selected_gender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender_combo.setAdapter(selected_gender);
+        gender_combo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?>  parent, View view, int position, long id) {
+                Toast.makeText(getActivity(),
+                        selected_gender.getItem(position) + "을 선택 했습니다.", Toast.LENGTH_SHORT).show();
+                setGender(selected_gender.getItem(position).toString());
+            }
+            public void onNothingSelected(AdapterView<?>  parent) {
+            }
+        });
 
         DatasetList = new ArrayList<>();
         DatasetList.add(new DataSet("A", "A", 1234));
@@ -61,6 +100,42 @@ public class Ranklist extends Fragment {
         DatasetList.add(new DataSet("A", "A", 1234));
         DatasetList.add(new DataSet("B", "B", 345));
         DatasetList.add(new DataSet("C", "C", 678));
+
+
+//        query = bundle.getString("query");
+//        mConnectionManager = new ConnectionManager(query);
+//        mConnectionManager.execute();
+//
+//        Log.i("What first?", "fucks");
+//
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        temp = mConnectionManager.getXmlList();
+//        if (temp == null)
+//            Log.i("XML TEST1 !!", "It's null!!");
+//        else
+//            Log.i("XML TEST1 !!", "성공");
+    }
+
+    public void setAge(String s){
+        query_age = s;
+    }
+
+    public void setGender(String s){
+        query_gender = s;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View v = inflater.inflate(R.layout.fragment_ranklist, container, false);
+
+        mListView = (ListView) v.findViewById(R.id.rank_list);
 
         mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, DatasetList);
         // use a linear layout manager
@@ -107,6 +182,8 @@ public class Ranklist extends Fragment {
 
                 @Override
                 public void onClick(View v) {
+                    Log.i("Combo Test!!",query_age);
+                    Log.i("Combo Test!!",query_gender);
                     startActivity(new Intent(getActivity(), DetailViewActivity.class));
                 }
             });
@@ -118,7 +195,6 @@ public class Ranklist extends Fragment {
 //                Car_company.setTextSize(25);
 //                Car_price.setTextSize(25);
 //                ll_cardLayout.setLayoutParams(lparam);
-//                ll_cardLayout.setBackgroundColor(Color.parseColor("#FAED7D"));
 //            }
 //            else {
 //                Car_rank.setTextSize(13);
@@ -126,7 +202,6 @@ public class Ranklist extends Fragment {
 //                Car_company.setTextSize(18);
 //                Car_price.setTextSize(18);
 //                ll_cardLayout.setLayoutParams(lparam);
-//                ll_cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
 //            }
 
             return v;

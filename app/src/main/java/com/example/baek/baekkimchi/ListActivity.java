@@ -175,7 +175,7 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void setAlertDialog(){
-        final CharSequence[] itemsMap = {"회사", "이름", "모델", "타입", "엔진", "공급방식", "배기량", "연료", "연비", "탑승인원", "구동방식", "변속기", "가격", "최대토크", "최고출력"};
+        final CharSequence[] itemsMap = {"회사", "이름", "모델", "타입", "엔진", "공급방식", "배기량", "연료", "연비", "탑승인원", "구동방식", "변속기", "가격", "최대토큰", "최고출력"};
         final CharSequence[] items = {"company_index", "car_name", "car_model", "type", "engene_type", "supply_method", "displacement", "fuel_type", "fuel_economy", "riding_personnal", "drive_type", "mission", "price", "max_token", "max_output"};
         final ArrayList<Integer> selectedItemIndexList = new ArrayList<Integer>();
 

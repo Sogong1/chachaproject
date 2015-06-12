@@ -40,6 +40,8 @@ public class Userlist extends Fragment {
         bundle = getArguments();
         query = bundle.getString("query");
         mConnectionManager = new ConnectionManager(query);
+        LinearLayout comboBox = (LinearLayout)getActivity().findViewById(R.id.recommend_combo);
+        comboBox.setVisibility(View.GONE);
 
         mConnectionManager.execute();
 
@@ -131,7 +133,6 @@ public class Userlist extends Fragment {
 //                Car_company.setTextSize(25);
 //                Car_price.setTextSize(25);
 //                ll_cardLayout.setLayoutParams(lparam);
-//                ll_cardLayout.setBackgroundColor(Color.parseColor("#FAED7D"));
 //            }
 //            else {
 //                Car_rank.setTextSize(13);
@@ -139,7 +140,6 @@ public class Userlist extends Fragment {
 //                Car_company.setTextSize(18);
 //                Car_price.setTextSize(18);
 //                ll_cardLayout.setLayoutParams(lparam);
-//                ll_cardLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
 //            }
 
             return v;

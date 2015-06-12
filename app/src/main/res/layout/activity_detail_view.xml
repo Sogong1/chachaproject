@@ -411,18 +411,18 @@
                             android:layout_height="fill_parent"
                             android:layout_weight="1"
                             android:layout_gravity="center_horizontal"
-                            android:text="최대토크"
+                            android:text="최대토큰"
                             android:gravity="center"
                             android:textColor="#FFFFFF"
                             android:background="@drawable/label_black"
                             android:textAppearance="?android:attr/textAppearanceMedium"/>
                         <TextView
-                            android:id="@+id/max_torque"
+                            android:id="@+id/max_token"
                             android:layout_width="0dp"
                             android:layout_height="fill_parent"
                             android:layout_weight="3"
                             android:layout_gravity="center_horizontal"
-                            android:text="최대토크"
+                            android:text="최대토큰"
                             android:gravity="center"
                             android:background="@drawable/label_white"
                             android:textAppearance="?android:attr/textAppearanceMedium"/>
