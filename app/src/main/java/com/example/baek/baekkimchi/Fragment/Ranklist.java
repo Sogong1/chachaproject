@@ -2,9 +2,6 @@ package com.example.baek.baekkimchi.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -24,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.baek.baekkimchi.Connection.ConnectionManager;
 import com.example.baek.baekkimchi.DetailViewActivity;
-import com.example.baek.baekkimchi.MainActivity;
 import com.example.baek.baekkimchi.R;
 
 import java.util.ArrayList;
@@ -40,6 +33,8 @@ public class Ranklist extends Fragment {
     private String query;
     private boolean isSkip;
     private ConnectionManager mConnectionManager;
+    private int USERLIST_REQUEST = 1000;
+    private int RECOMMENDLIST_REQUEST = 2000;
     private ArrayList<DataSet> temp;
     private ArrayList<DataSet> DatasetList;
     private ArrayAdapter<CharSequence>  selected_age;
@@ -70,6 +65,10 @@ public class Ranklist extends Fragment {
                 Toast.makeText(getActivity(),
                         selected_age.getItem(position) + "을 선택 했습니다.", Toast.LENGTH_SHORT).show();
                 setAge(selected_age.getItem(position).toString());
+                if(query_gender == null)
+                    updateUI(query_age, "man_hit");
+                else
+                    updateUI(query_age, query_gender);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -85,6 +84,7 @@ public class Ranklist extends Fragment {
                 Toast.makeText(getActivity(),
                         selected_gender.getItem(position) + "을 선택 했습니다.", Toast.LENGTH_SHORT).show();
                 setGender(selected_gender.getItem(position).toString());
+                updateUI(query_age, query_gender);
             }
             public void onNothingSelected(AdapterView<?>  parent) {
             }
@@ -103,22 +103,27 @@ public class Ranklist extends Fragment {
 
 
 //        query = bundle.getString("query");
-//        mConnectionManager = new ConnectionManager(query);
-//        mConnectionManager.execute();
-//
-//        Log.i("What first?", "fucks");
-//
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        temp = mConnectionManager.getXmlList();
-//        if (temp == null)
-//            Log.i("XML TEST1 !!", "It's null!!");
-//        else
-//            Log.i("XML TEST1 !!", "성공");
+        query = "SELECT car_name, car_model, type, engene_type, supply_method"
+                +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
+                +", mission, price, max_token"
+                +" FROM man_hit NATURAL JOIN car ORDER BY `20` DESC LIMIT 10";
+
+        mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
+        mConnectionManager.execute();
+
+        Log.i("What first?", "fucks");
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        temp = mConnectionManager.getXmlList();
+        if (temp == null)
+            Log.i("XML TEST1 !!", "It's null!!");
+        else
+            Log.i("XML TEST1 !!", "성공");
     }
 
     public void setAge(String s){
@@ -127,6 +132,49 @@ public class Ranklist extends Fragment {
 
     public void setGender(String s){
         query_gender = s;
+    }
+    public String setGenderTable(String s){
+        if(s.equals("남자"))
+            return "man_hit";
+        else if(s.equals("여자"))
+            return "woman_hit";
+        return "";
+    }
+
+    public void updateUI(String age, String gender){
+        final String age_query = age;
+        final String gender_query;
+        String gender_temp = gender;
+        gender_query = setGenderTable(gender_temp);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                query = "SELECT car_name, car_model, type, engene_type, supply_method"
+                        +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
+                        +", mission, price, max_token"
+                        +" FROM "+gender_query+" NATURAL JOIN car ORDER BY `"+age_query+"` DESC LIMIT 10";
+
+                mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
+                mConnectionManager.execute();
+
+                Log.i("What first?", "fucks");
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                temp = mConnectionManager.getXmlList();
+
+                mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp);
+//        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, DatasetList);
+                // use a linear layout manager
+
+                mListView.setAdapter(mAdapter);
+            }
+        });
     }
 
     @Override
@@ -137,7 +185,8 @@ public class Ranklist extends Fragment {
 
         mListView = (ListView) v.findViewById(R.id.rank_list);
 
-        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, DatasetList);
+        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp);
+//        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, DatasetList);
         // use a linear layout manager
 
         mListView.setAdapter(mAdapter);

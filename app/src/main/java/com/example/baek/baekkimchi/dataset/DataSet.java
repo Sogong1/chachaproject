@@ -9,6 +9,10 @@ public class DataSet {
     private String company;
     private int price;
 
+    public DataSet(String name){
+        this.name = name;
+    }
+
     public DataSet(String name, String company, int price) {
         this.name = name;
         this.company = company;

@@ -52,6 +52,9 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     private String modelList[];
     private String priceList[];
     private ArrayList<DataSet> xmlList;
+    private int state;
+    private int USERLIST_REQUEST = 1000;
+    private int RECOMMENDLIST_REQUEST = 2000;
 
     HttpEntity entityResponse;
     InputStream im;
@@ -61,7 +64,8 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         this.query = "";
     }
 
-    public ConnectionManager(String query) {
+    public ConnectionManager(String query, int state) {
+        this.state = state;
         this.query = query;
     }
 
@@ -69,8 +73,13 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... params) {
         // TODO Auto-generated method stub
         //이곳에서 UI를 변경하면 에러
+        if(state == USERLIST_REQUEST)
+            url = "http://172.200.153.146/system/get_list.php";
+        else if(state == RECOMMENDLIST_REQUEST)
+            url = "http://172.200.153.146/system/get_recommend.php";
+        else
+            url = "http://172.200.153.146/system/get_list.php";
 
-        url = "http://172.200.153.146/system/blank.php";
         XMLMessage = "";    //final result XML
         message = "";       //temp message buffer
 
