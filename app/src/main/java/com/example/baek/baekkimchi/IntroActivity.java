@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.baek.baekkimchi.Database.DBManagerHandler;
@@ -24,12 +25,15 @@ public class IntroActivity extends Activity {
     private Timer timer;
     private DBManagerHandler handler;
 
+    private TextView dbCheck;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
         handler = new DBManagerHandler(getApplicationContext());
+        dbCheck = (TextView)findViewById(R.id.db_check);
 
         // Animation 객체를 선언한 후 타겟 위젯에서 startAnimation
         // 이미지들이 담긴 컨테이너

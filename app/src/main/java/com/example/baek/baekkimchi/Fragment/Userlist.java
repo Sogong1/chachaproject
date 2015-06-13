@@ -30,9 +30,17 @@ public class Userlist extends Fragment {
 
     private ListView mListView;
     private CustomAdapter mAdapter;
+    private String age;
+    private String gender;
     private String query;
     private Bundle bundle;
     private ConnectionManager mConnectionManager;
+
+    private TextView age_check;
+    private TextView gender_check;
+    private TextView query_check;
+    private TextView xml_check;
+
     private int USERLIST_REQUEST = 1000;
     private int RECOMMENDLIST_REQUEST = 2000;
     private ArrayList<DataSet> temp;
@@ -40,14 +48,15 @@ public class Userlist extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
+        age = bundle.getString("age");
+        gender = bundle.getString("gender");
         query = bundle.getString("query");
-        mConnectionManager = new ConnectionManager(getActivity(), query, USERLIST_REQUEST);
+
+        mConnectionManager = new ConnectionManager(query, USERLIST_REQUEST);
         LinearLayout comboBox = (LinearLayout)getActivity().findViewById(R.id.recommend_combo);
         comboBox.setVisibility(View.GONE);
 
         mConnectionManager.execute();
-
-        Log.i("What first?", "fucks");
 
         try {
             Thread.sleep(3000);
@@ -61,6 +70,26 @@ public class Userlist extends Fragment {
         else
             Log.i("XML TEST1 !!", "성공");
 
+        Log.i("Test_age",age);
+        Log.i("Test_gender",gender);
+        Log.i("Test_query",query);
+        Log.i("Test_xml",temp.get(0).getXml());
+        initTestView();
+        setTestView(age, gender, query, temp.get(0).getXml());
+
+    }
+
+    public void initTestView(){
+        age_check = (TextView)getActivity().findViewById(R.id.age_check);
+        gender_check = (TextView)getActivity().findViewById(R.id.gender_check);
+        query_check = (TextView)getActivity().findViewById(R.id.query_check);
+        xml_check = (TextView)getActivity().findViewById(R.id.xml_check);
+    }
+    public void setTestView(String age, String gender, String query, String xml){
+        age_check.setText(age);
+        gender_check.setText(gender);
+        query_check.setText(query);
+        xml_check.setText(xml);
     }
 
     @Override
@@ -115,17 +144,22 @@ public class Userlist extends Fragment {
             Car_name.setText(mDataset.get(position).getName());
 
             TextView Car_company = (TextView) v.findViewById(R.id.Car_company);
-            Car_company.setText(mDataset.get(position).getCompany());
+            Car_company.setText(mDataset.get(position).getModel());
 
             TextView Car_price = (TextView) v.findViewById(R.id.Car_price);
             Car_price.setText(mDataset.get(position).getPrice() + "만원");
+
+            DataSet clickedDataSet = mDataset.get(position);
+
+            final Intent intent = new Intent(getActivity(), DetailViewActivity.class);
+            intent.putExtra("mDataset",clickedDataSet);
 
             // 리스트 아이템을 터치 했을 때 이벤트 발생
             v.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), DetailViewActivity.class));
+                    startActivity(intent);
                 }
             });
 //            if (position == 0) {

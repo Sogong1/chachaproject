@@ -4,118 +4,195 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:background="@drawable/title_background">
-        <Button
-            android:id="@+id/bt_oneFragment"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/title_mylist_select" />
-
-        <Button
-            android:id="@+id/bt_twoFragment"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/title_rec_unselc" />
-        </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:background="@drawable/background_normal">
-
+            android:layout_height="fill_parent">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="4"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="12" >
-                <LinearLayout
-                    android:id="@+id/recommend_combo"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight=".7"
-                    android:visibility="gone"
-                    android:background="@drawable/label_white"
-                    android:orientation="horizontal">
-                    <Spinner
-                        android:id="@+id/age_combo"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="10dp"/>
-                    <Spinner
-                        android:id="@+id/gender_combo"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="30dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/ll_fragment"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:orientation="horizontal"
-                    android:layout_weight="8" />
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="@drawable/title_background">
+                <Button
+                    android:id="@+id/bt_oneFragment"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/title_mylist_select" />
+
+                <Button
+                    android:id="@+id/bt_twoFragment"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/title_rec_unselc" />
                 </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"/>
+                android:layout_weight="8"
+                android:background="@drawable/background_normal">
 
-                <Button
-                    android:id="@+id/btn_filter"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:background="@drawable/button"
-                    android:layout_weight="5"
-                    android:text="필터        "
-                    android:textColor="#ffffff"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"/>
-                <Button
-                    android:id="@+id/btn_return"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/button"
-                    android:layout_weight="5"
-                    android:text="다른 견적 작성        "
-                    android:textColor="#ffffff"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"/>
+                    android:layout_weight="4"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="12" >
+                        <LinearLayout
+                            android:id="@+id/recommend_combo"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight=".7"
+                            android:visibility="gone"
+                            android:background="@drawable/label_white"
+                            android:orientation="horizontal">
+                            <Spinner
+                                android:id="@+id/age_combo"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginRight="10dp"/>
+                            <Spinner
+                                android:id="@+id/gender_combo"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="30dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_fragment"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:orientation="horizontal"
+                            android:layout_weight="8" />
+                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"/>
 
+                        <Button
+                            android:id="@+id/btn_filter"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/button"
+                            android:layout_weight="5"
+                            android:text="필터        "
+                            android:textColor="#ffffff"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"/>
+                        <Button
+                            android:id="@+id/btn_return"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/button"
+                            android:layout_weight="5"
+                            android:text="다른 견적 작성        "
+                            android:textColor="#ffffff"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="age : "/>
+                <TextView
+                    android:id="@+id/age_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="null"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="gender : "/>
+                <TextView
+                    android:id="@+id/gender_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="null"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="query : "/>
+                <TextView
+                    android:id="@+id/query_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="null"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="result XML : "/>
+                <TextView
+                    android:id="@+id/xml_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="null"/>
             </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
-
-
+    </FrameLayout>
 </LinearLayout>

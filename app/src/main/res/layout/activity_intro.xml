@@ -4,74 +4,101 @@
     android:layout_height="match_parent"
     android:background="#F111"
     android:orientation="vertical" >
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <ViewFlipper
+                android:id="@+id/view_flipper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-    <ViewFlipper
-        android:id="@+id/view_flipper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_nolight" />
 
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_nolight" />
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_light" />
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_nolight" />
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_light" />
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_nolight" />
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_light" />
+                <ImageView
+                    android:layout_width="455dp"
+                    android:layout_height="212dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layoutAnimation="@anim/translate"
+                    android:background="@drawable/img_intro_light" />
 
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_light" />
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_nolight" />
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_light" />
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_nolight" />
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_light" />
-        <ImageView
-            android:layout_width="455dp"
-            android:layout_height="212dp"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/translate"
-            android:background="@drawable/img_intro_light" />
+            </ViewFlipper>
 
-    </ViewFlipper>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="1.5"
-        android:gravity="center"
-        android:text="백김치"
-        android:textColor="#FFFF"
-        android:textSize="20sp" />
-
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="백김치"
+                android:textColor="#FFFF"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="Data is already in DB : "/>
+                <TextView
+                    android:id="@+id/db_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="null"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

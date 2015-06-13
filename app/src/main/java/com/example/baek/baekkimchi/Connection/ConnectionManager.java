@@ -1,7 +1,5 @@
 package com.example.baek.baekkimchi.Connection;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -50,9 +48,23 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     private String age;
     private String gender;
     private String cost;
+
+    private String index[];
     private String carNameList[];
     private String modelList[];
     private String priceList[];
+    private String type[];
+    private String engine_type[];
+    private String supply_method[];
+    private String displacement[];
+    private String fuel_type[];
+    private String fuel_economy[];
+    private String riding_personal[];
+    private String drive_type[];
+    private String mission[];
+    private String max_token[];
+    private String max_output[];
+
     private ArrayList<DataSet> xmlList;
     private int state;
     private int USERLIST_REQUEST = 1000;
@@ -62,25 +74,13 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     InputStream im;
     BufferedReader reader;
 
-    private ProgressDialog pdia;
-    private Context mContext;
-
     public ConnectionManager() {
         this.query = "";
     }
 
-    public ConnectionManager(Context context, String query, int state) {
-        this.mContext = context;
+    public ConnectionManager(String query, int state) {
         this.state = state;
         this.query = query;
-    }
-
-    @Override
-    protected void onPreExecute(){
-        super.onPreExecute();
-        pdia = new ProgressDialog(mContext);
-        pdia.setMessage("Loading...");
-        pdia.show();
     }
 
     @Override
@@ -93,6 +93,13 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
             url = "http://sogong.besaba.com/system/get_recommend.php";
         else
             url = "http://sogong.besaba.com/system/get_list.php";
+
+//        if(state == USERLIST_REQUEST)
+//            url = "http://172.200.153.146/system/get_list.php";
+//        else if(state == RECOMMENDLIST_REQUEST)
+//            url = "http://172.200.153.146/system/get_recommend.php";
+//        else
+//            url = "http://172.200.153.146/system/get_list.php";
 
         XMLMessage = "";    //final result XML
         message = "";       //temp message buffer
@@ -173,9 +180,7 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         NodeList child = result.item(0).getChildNodes();
 //        System.out.println(child.getLength());
         int max = child.getLength();
-        carNameList = new String[max];
-        modelList = new String[max];
-        priceList = new String[max];
+        initList(max);
 
         ArrayList<DataSet> xmllist = new ArrayList<DataSet>();
 
@@ -183,31 +188,16 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
             NodeList childList = child.item(i).getChildNodes();
             for(int j = 0;j<childList.getLength();j++){
                 String element = childList.item(j).getNodeName();
-//                System.out.print(element);
                 String text = childList.item(j).getTextContent();
-//                System.out.print(text);
-//
-                if(element.equals("name")){
-//                    Log.i("XML text",text);
-                    carNameList[i] = text;}
-                else if(element.equals("model")){
-                    modelList[i] = text;}
-                else if(element.equals("price")){
-                    priceList[i] = text;
-                }
+                setValue(element, i, text);
             }
-            Log.i("XMLTest "+i+": ", carNameList[i]);
-            Log.i("XMLTest "+i+": ", modelList[i]);
-            Log.i("XMLTest "+i+": ", priceList[i]);
 
-            xmllist.add(new DataSet(carNameList[i], modelList[i], Integer.parseInt(priceList[i])));
+            xmllist.add(new DataSet(index[i],carNameList[i], modelList[i], Integer.parseInt(priceList[i]), type[i]
+                    , engine_type[i], supply_method[i], displacement[i], fuel_type[i], fuel_economy[i]
+                    , riding_personal[i], drive_type[i], mission[i], max_token[i], max_output[i], temp));
 
-            Log.i("XMLTest_dataSet"+i,xmllist.get(i).getName());
+            Log.i("XMLTest_dataSet"+i,xmllist.get(i).getIndex());
         }
-//
-//        xmllist[0] = carNameList;
-//        xmllist[1] = modelList;
-//        xmllist[2] = priceList;
 
         return xmllist;
     }
@@ -221,10 +211,46 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         return xmlList;
     }
 
+    public void initList(int n){
+        index = new String[n];
+        carNameList = new String[n];
+        modelList = new String[n];
+        priceList = new String[n];
+        type = new String[n];
+        engine_type = new String[n];
+        supply_method = new String[n];
+        displacement = new String[n];
+        fuel_type = new String[n];
+        fuel_economy = new String[n];
+        riding_personal = new String[n];
+        drive_type = new String[n];
+        mission = new String[n];
+        max_token = new String[n];
+        max_output = new String[n];
+    }
+
+    public void setValue(String element, int position, String text){
+        if(element.equals("car_index")) index[position] = text;
+        else if(element.equals("name")) carNameList[position] = text;
+        else if(element.equals("model")) modelList[position] = text;
+        else if(element.equals("price")) priceList[position] = text;
+        else if(element.equals("type")) type[position] = text;
+        else if(element.equals("engine_type")) engine_type[position] = text;
+        else if(element.equals("supply_method")) supply_method[position] = text;
+        else if(element.equals("displacement")) displacement[position] = text;
+        else if(element.equals("fuel_type")) fuel_type[position] = text;
+        else if(element.equals("fuel_economy")) fuel_economy[position] = text;
+        else if(element.equals("riding_personnal")) riding_personal[position] = text;
+        else if(element.equals("drive_type")) drive_type[position] = text;
+        else if(element.equals("mission")) mission[position] = text;
+        else if(element.equals("max_token")) max_token[position] = text;
+        else if(element.equals("max_output")) max_output[position] = text;
+
+    }
+
 
     protected void onPostExecute(String result){
         //작업 마친후 내용. UI는 여기서 변경할 것,
-        pdia.dismiss();
         super.onPostExecute(result);
 //        Log.i("XML result2 : ", result);
 //        setXmlList(parseXML(result));

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
 
     private Button bt_return, bt_filter;
     private Button bt_oneFragment, bt_twoFragment;
+
     private int age, cost;
     private String gender;
     private String query;
@@ -40,12 +42,20 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
         Intent intent = getIntent();
-        isSkip = intent.getExtras().getBoolean("isSkip");
-        age = intent.getExtras().getInt("age");
-        gender = intent.getExtras().getString("gender");
-        cost = intent.getExtras().getInt("cost");
+        if(intent.getExtras() == null){
+            isSkip = false;
+            age = 20;
+            gender = "남자";
+            cost = 2100;
+        }
+        else {
+            isSkip = intent.getExtras().getBoolean("isSkip");
+            age = intent.getExtras().getInt("age");
+            gender = intent.getExtras().getString("gender");
+            cost = intent.getExtras().getInt("cost");
+        }
+
 
         selectedFilter = new ArrayList<>();
 
@@ -109,6 +119,8 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 bt_twoFragment.setBackgroundResource(R.drawable.title_rec_unselc);
 
                 Bundle bundle1 = new Bundle();
+                bundle1.putString("age", age+"");
+                bundle1.putString("gender", gender);
                 bundle1.putString("query", query);
                 newFragment = new Userlist();
                 newFragment.setArguments(bundle1);

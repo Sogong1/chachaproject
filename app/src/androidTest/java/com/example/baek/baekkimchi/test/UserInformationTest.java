@@ -15,6 +15,8 @@ import com.example.baek.baekkimchi.R;
 
 import junit.framework.TestCase;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by Baek on 2015-06-02.
  */
@@ -24,9 +26,6 @@ public class UserInformationTest extends ActivityInstrumentationTestCase2<MainAc
         super(MainActivity.class);
     }
 
-    public void UserInformation1() {
-        //When user executes the Personal Car Purchase Consulting with empty internal database, GUI will pop up for input profile.
-    }
 
     public void testUserInformation2() {
         //There should be options such as gender, age and salary

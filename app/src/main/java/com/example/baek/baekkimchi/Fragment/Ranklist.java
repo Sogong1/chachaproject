@@ -89,16 +89,16 @@ public class Ranklist extends Fragment {
             }
         });
 
+
 //        query = bundle.getString("query");
-        query = "SELECT car_name, car_model, type, engene_type, supply_method"
+        query = "SELECT car_index, car_name, car_model, type, engene_type, supply_method"
                 +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
-                +", mission, price, max_token"
+                +", mission, price, max_token, max_output"
                 +" FROM man_hit NATURAL JOIN car ORDER BY `20` DESC LIMIT 10";
 
-        mConnectionManager = new ConnectionManager(getActivity(), query, RECOMMENDLIST_REQUEST);
+        mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
         mConnectionManager.execute();
 
-        Log.i("What first?", "fucks");
 
         try {
             Thread.sleep(3000);
@@ -137,12 +137,12 @@ public class Ranklist extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                query = "SELECT car_name, car_model, type, engene_type, supply_method"
+                query = "SELECT car_index, car_name, car_model, type, engene_type, supply_method"
                         +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
-                        +", mission, price, max_token"
+                        +", mission, price, max_token, max_output"
                         +" FROM "+gender_query+" NATURAL JOIN car ORDER BY `"+age_query+"` DESC LIMIT 10";
 
-                mConnectionManager = new ConnectionManager(getActivity(), query, RECOMMENDLIST_REQUEST);
+                mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
                 mConnectionManager.execute();
 
                 Log.i("What first?", "fucks");
@@ -208,10 +208,15 @@ public class Ranklist extends Fragment {
             Car_name.setText(mDataset.get(position).getName());
 
             TextView Car_company = (TextView) v.findViewById(R.id.Car_company);
-            Car_company.setText(mDataset.get(position).getCompany());
+            Car_company.setText(mDataset.get(position).getModel());
 
             TextView Car_price = (TextView) v.findViewById(R.id.Car_price);
             Car_price.setText(mDataset.get(position).getPrice() + "만원");
+
+            DataSet clickedDataSet = mDataset.get(position);
+
+            final Intent intent = new Intent(getActivity(), DetailViewActivity.class);
+            intent.putExtra("mDataset", clickedDataSet);
 
             // 리스트 아이템을 터치 했을 때 이벤트 발생
             v.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +225,7 @@ public class Ranklist extends Fragment {
                 public void onClick(View v) {
                     Log.i("Combo Test!!",query_age);
                     Log.i("Combo Test!!",query_gender);
-                    startActivity(new Intent(getActivity(), DetailViewActivity.class));
+                    startActivity(intent);
                 }
             });
 //

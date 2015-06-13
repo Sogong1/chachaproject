@@ -3,6 +3,7 @@ package com.example.baek.baekkimchi.Database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.TextView;
 
 /**
  * Created by Baek on 2015-06-12.
