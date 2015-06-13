@@ -36,7 +36,6 @@ public class Ranklist extends Fragment {
     private int USERLIST_REQUEST = 1000;
     private int RECOMMENDLIST_REQUEST = 2000;
     private ArrayList<DataSet> temp;
-    private ArrayList<DataSet> DatasetList;
     private ArrayAdapter<CharSequence>  selected_age;
     private ArrayAdapter<CharSequence>  selected_gender;
     private String query_age;
@@ -90,25 +89,13 @@ public class Ranklist extends Fragment {
             }
         });
 
-        DatasetList = new ArrayList<>();
-        DatasetList.add(new DataSet("A", "A", 1234));
-        DatasetList.add(new DataSet("B", "B", 345));
-        DatasetList.add(new DataSet("C", "C", 678));
-        DatasetList.add(new DataSet("A", "A", 1234));
-        DatasetList.add(new DataSet("B", "B", 345));
-        DatasetList.add(new DataSet("C", "C", 678));
-        DatasetList.add(new DataSet("A", "A", 1234));
-        DatasetList.add(new DataSet("B", "B", 345));
-        DatasetList.add(new DataSet("C", "C", 678));
-
-
 //        query = bundle.getString("query");
         query = "SELECT car_name, car_model, type, engene_type, supply_method"
                 +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
                 +", mission, price, max_token"
                 +" FROM man_hit NATURAL JOIN car ORDER BY `20` DESC LIMIT 10";
 
-        mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
+        mConnectionManager = new ConnectionManager(getActivity(), query, RECOMMENDLIST_REQUEST);
         mConnectionManager.execute();
 
         Log.i("What first?", "fucks");
@@ -155,7 +142,7 @@ public class Ranklist extends Fragment {
                         +", mission, price, max_token"
                         +" FROM "+gender_query+" NATURAL JOIN car ORDER BY `"+age_query+"` DESC LIMIT 10";
 
-                mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
+                mConnectionManager = new ConnectionManager(getActivity(), query, RECOMMENDLIST_REQUEST);
                 mConnectionManager.execute();
 
                 Log.i("What first?", "fucks");

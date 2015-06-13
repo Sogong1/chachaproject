@@ -2,6 +2,7 @@ package com.example.baek.baekkimchi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,16 +14,22 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
+import com.example.baek.baekkimchi.Database.DBManagerHandler;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class IntroActivity extends Activity {
     private Timer timer;
+    private DBManagerHandler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        handler = new DBManagerHandler(getApplicationContext());
 
         // Animation 객체를 선언한 후 타겟 위젯에서 startAnimation
         // 이미지들이 담긴 컨테이너
@@ -45,8 +52,6 @@ public class IntroActivity extends Activity {
             }
         }, 500, 500);
 
-
-
         Thread thread = new Thread(){
 
             @Override
@@ -55,8 +60,24 @@ public class IntroActivity extends Activity {
                 try {
 
                     sleep(3000);
-                    startActivity(new Intent(IntroActivity.this, MainActivity.class));
-                    finish();
+
+                    int age, cost;
+                    String gender;
+                    String query = "SELECT * FROM inform_table";
+                    Cursor cursor = handler.selectInform(query);
+                    if (cursor.moveToNext()) {
+                        Intent intent = new Intent(IntroActivity.this, ListActivity.class);
+                        intent.putExtra("isSkip", false);
+                        intent.putExtra("age", cursor.getInt(cursor.getColumnIndex("age")));
+                        intent.putExtra("gender", cursor.getString(cursor.getColumnIndex("gender")));
+                        intent.putExtra("cost", cursor.getInt(cursor.getColumnIndex("cost")));
+
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        startActivity(new Intent(IntroActivity.this, MainActivity.class));
+                        finish();
+                    }
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -65,7 +86,6 @@ public class IntroActivity extends Activity {
             }
 
         };
-
         thread.start();
     }
 

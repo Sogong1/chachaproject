@@ -1,5 +1,7 @@
 package com.example.baek.baekkimchi.Connection;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -60,13 +62,25 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     InputStream im;
     BufferedReader reader;
 
+    private ProgressDialog pdia;
+    private Context mContext;
+
     public ConnectionManager() {
         this.query = "";
     }
 
-    public ConnectionManager(String query, int state) {
+    public ConnectionManager(Context context, String query, int state) {
+        this.mContext = context;
         this.state = state;
         this.query = query;
+    }
+
+    @Override
+    protected void onPreExecute(){
+        super.onPreExecute();
+        pdia = new ProgressDialog(mContext);
+        pdia.setMessage("Loading...");
+        pdia.show();
     }
 
     @Override
@@ -74,11 +88,11 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         // TODO Auto-generated method stub
         //이곳에서 UI를 변경하면 에러
         if(state == USERLIST_REQUEST)
-            url = "http://172.200.153.146/system/get_list.php";
+            url = "http://sogong.besaba.com/system/get_list.php";
         else if(state == RECOMMENDLIST_REQUEST)
-            url = "http://172.200.153.146/system/get_recommend.php";
+            url = "http://sogong.besaba.com/system/get_recommend.php";
         else
-            url = "http://172.200.153.146/system/get_list.php";
+            url = "http://sogong.besaba.com/system/get_list.php";
 
         XMLMessage = "";    //final result XML
         message = "";       //temp message buffer
@@ -210,6 +224,7 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
 
     protected void onPostExecute(String result){
         //작업 마친후 내용. UI는 여기서 변경할 것,
+        pdia.dismiss();
         super.onPostExecute(result);
 //        Log.i("XML result2 : ", result);
 //        setXmlList(parseXML(result));

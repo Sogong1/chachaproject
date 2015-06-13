@@ -2,6 +2,7 @@ package com.example.baek.baekkimchi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,12 +16,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.baek.baekkimchi.Database.DBManagerHandler;
+
 
 public class MainActivity extends Activity {
 
     private TextView testBtnOK, testBtnSkip;
     private EditText input_age, input_cost;
     private RadioGroup input_gender;
+    private DBManagerHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        handler = new DBManagerHandler(getApplicationContext());
         input_age = (EditText) findViewById(R.id.input_age);
         input_gender = (RadioGroup) findViewById(R.id.input_gender);
         input_cost = (EditText) findViewById(R.id.input_cost);
@@ -72,7 +77,7 @@ public class MainActivity extends Activity {
 
         if (input_gender.getCheckedRadioButtonId() == R.id.input_male)
             gender = "남자";
-        else if (input_gender.getCheckedRadioButtonId()==R.id.input_female)
+        else if (input_gender.getCheckedRadioButtonId() == R.id.input_female)
             gender = "여자";
         else {
             Toast.makeText(this, "성별을 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -87,6 +92,17 @@ public class MainActivity extends Activity {
         }
 
         Toast.makeText(this, "나이 : " + age + "\n성별 : " + gender + "\n금액 : " + cost, Toast.LENGTH_SHORT).show();
+
+        String query1 = "SELECT * FROM inform_table";
+        Cursor cursor = handler.selectInform(query1);
+        if (cursor.moveToNext()) {
+            age = cursor.getInt(cursor.getColumnIndex("age"));
+            String query2 = "UPDATE inform_table SET age = "+age+", gender = '"+gender+"', cost="+cost+";";
+            handler.update(query2);
+        }
+        else {
+            handler.insertInform(age, gender, cost); // db에 insert
+        }
 
         testBtnOK.setText("OK: true");
         Intent intent = new Intent(MainActivity.this, ListActivity.class);

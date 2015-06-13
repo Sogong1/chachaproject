@@ -41,7 +41,7 @@ public class Userlist extends Fragment {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
         query = bundle.getString("query");
-        mConnectionManager = new ConnectionManager(query, USERLIST_REQUEST);
+        mConnectionManager = new ConnectionManager(getActivity(), query, USERLIST_REQUEST);
         LinearLayout comboBox = (LinearLayout)getActivity().findViewById(R.id.recommend_combo);
         comboBox.setVisibility(View.GONE);
 
