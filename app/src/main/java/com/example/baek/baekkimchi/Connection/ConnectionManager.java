@@ -1,7 +1,10 @@
 package com.example.baek.baekkimchi.Connection;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.baek.baekkimchi.dataset.DataSet;
 
@@ -74,13 +77,28 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     InputStream im;
     BufferedReader reader;
 
+    private ProgressDialog dialog;
+    private Context mContext;
+
     public ConnectionManager() {
         this.query = "";
     }
 
-    public ConnectionManager(String query, int state) {
+    public ConnectionManager(Context context, String query, int state) {
         this.state = state;
         this.query = query;
+        this.mContext = context;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        dialog = new ProgressDialog(mContext);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("로딩중입니다..");
+        Log.i("tnstj : ", "111");
+        // show dialog
+        dialog.show();
+        super.onPreExecute();
     }
 
     @Override
@@ -88,18 +106,11 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         // TODO Auto-generated method stub
         //이곳에서 UI를 변경하면 에러
         if(state == USERLIST_REQUEST)
-            url = "http://sogong.besaba.com/system/get_list.php";
+            url = "http://172.200.153.146/system/get_list.php";
         else if(state == RECOMMENDLIST_REQUEST)
-            url = "http://sogong.besaba.com/system/get_recommend.php";
+            url = "http://172.200.153.146/system/get_recommend.php";
         else
-            url = "http://sogong.besaba.com/system/get_list.php";
-
-//        if(state == USERLIST_REQUEST)
-//            url = "http://172.200.153.146/system/get_list.php";
-//        else if(state == RECOMMENDLIST_REQUEST)
-//            url = "http://172.200.153.146/system/get_recommend.php";
-//        else
-//            url = "http://172.200.153.146/system/get_list.php";
+            url = "http://172.200.153.146/system/get_list.php";
 
         XMLMessage = "";    //final result XML
         message = "";       //temp message buffer
@@ -111,6 +122,15 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
 
         //웹서버에서 값 받기
         XMLMessage = getMessage(message);
+
+        Log.i("tnstj : ", "222");
+        try {
+            //asyncDialog.setProgress(i * 30);
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("tnstj : ", "333");
 
         return XMLMessage;
     }
@@ -188,6 +208,7 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
             NodeList childList = child.item(i).getChildNodes();
             for(int j = 0;j<childList.getLength();j++){
                 String element = childList.item(j).getNodeName();
+//                System.out.print(element);
                 String text = childList.item(j).getTextContent();
                 setValue(element, i, text);
             }
@@ -198,13 +219,16 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
 
             Log.i("XMLTest_dataSet"+i,xmllist.get(i).getIndex());
         }
+//
+//        xmllist[0] = carNameList;
+//        xmllist[1] = modelList;
+//        xmllist[2] = priceList;
 
         return xmllist;
     }
 
     public void setXmlList(ArrayList<DataSet> list){
         xmlList = list;
-
     }
 
     public ArrayList<DataSet> getXmlList() {
@@ -251,6 +275,8 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
 
     protected void onPostExecute(String result){
         //작업 마친후 내용. UI는 여기서 변경할 것,
+        Log.i("tnstj : ", "444");
+        dialog.dismiss();
         super.onPostExecute(result);
 //        Log.i("XML result2 : ", result);
 //        setXmlList(parseXML(result));

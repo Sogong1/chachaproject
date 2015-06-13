@@ -36,7 +36,6 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     private String gender;
     private String query;
     private boolean isSkip;
-    private ArrayList<String> selectedFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +55,7 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
             cost = intent.getExtras().getInt("cost");
         }
 
-
-        selectedFilter = new ArrayList<>();
-
-        query = "select * from car where price >= \""+cost+"\"-100 or price <= \""+cost+"\"+100 LIMIT 10";
+        query = "select * from car where price >= \""+cost+"\"-100 and price <= \""+cost+"\"+100 LIMIT 10";
 
         bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
         bt_oneFragment.setOnClickListener(this);
@@ -187,38 +183,36 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void setAlertDialog(){
-        final CharSequence[] itemsMap = {"회사", "이름", "모델", "타입", "엔진", "공급방식", "배기량", "연료", "연비", "탑승인원", "구동방식", "변속기", "가격", "최대토큰", "최고출력"};
-        final CharSequence[] items = {"company_index", "car_name", "car_model", "type", "engene_type", "supply_method", "displacement", "fuel_type", "fuel_economy", "riding_personnal", "drive_type", "mission", "price", "max_token", "max_output"};
+        final CharSequence[] itemsMap = {"타입","연료", "변속기"};
+        final CharSequence[] items = {"type", "fuel_type", "mission"};
         final ArrayList<Integer> selectedItemIndexList = new ArrayList<Integer>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
         // 여기서 부터는 알림창의 속성 설정
         builder.setTitle("필터를 선택하세요")        // 제목 설정
-                .setMultiChoiceItems(itemsMap, new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}, new DialogInterface.OnMultiChoiceClickListener() {
+                .setSingleChoiceItems(itemsMap, 0, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked)
-                            selectedItemIndexList.add(which);
-                        else if (selectedItemIndexList.contains(which)) {
-                            selectedItemIndexList.remove(Integer.valueOf(which));
-                        }
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("index : ", which + "");
+                        selectedItemIndexList.add(which);
                     }
                 })
-                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     // 확인 버튼 클릭시 설정
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        if (selectedItemIndexList.size() != 0)
-                            for (int i = 0; i < selectedItemIndexList.size(); i++) {
-                                String filter = items[selectedItemIndexList.get(i)].toString();
-                                selectedFilter.add(filter);
-                                stringBuilder = stringBuilder.append(" "+filter);
-                            }
-                        Toast.makeText(getApplicationContext(), stringBuilder.toString(), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        Log.i("index : ", selectedItemIndexList.get(0) + "");
+                        query = "select * from car group by \"" + items[selectedItemIndexList.get(0)] + "\", price having price >= \"" + cost + "\"-100 and price <= \"" + cost + "\"+100 LIMIT 10";
 
+                        if (isSkip) {
+                            mCurrentFragmentIndex = FRAGMENT_TWO;
+                        } else {
+                            mCurrentFragmentIndex = FRAGMENT_ONE;
+                        }
+                        fragmentReplace(mCurrentFragmentIndex);
+
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {

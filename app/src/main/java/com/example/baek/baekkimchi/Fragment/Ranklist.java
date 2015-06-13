@@ -2,6 +2,7 @@ package com.example.baek.baekkimchi.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,8 +42,6 @@ public class Ranklist extends Fragment {
     private String query_age;
     private String query_gender;
 
-
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
@@ -64,10 +63,10 @@ public class Ranklist extends Fragment {
                 Toast.makeText(getActivity(),
                         selected_age.getItem(position) + "을 선택 했습니다.", Toast.LENGTH_SHORT).show();
                 setAge(selected_age.getItem(position).toString());
-                if(query_gender == null)
-                    updateUI(query_age, "man_hit");
-                else
+                if(query_gender != null){
                     updateUI(query_age, query_gender);
+                }
+
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -85,32 +84,22 @@ public class Ranklist extends Fragment {
                 setGender(selected_gender.getItem(position).toString());
                 updateUI(query_age, query_gender);
             }
+
             public void onNothingSelected(AdapterView<?>  parent) {
             }
         });
 
+    }
 
-//        query = bundle.getString("query");
-        query = "SELECT car_index, car_name, car_model, type, engene_type, supply_method"
-                +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
-                +", mission, price, max_token, max_output"
-                +" FROM man_hit NATURAL JOIN car ORDER BY `20` DESC LIMIT 10";
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
-        mConnectionManager.execute();
+        View v = inflater.inflate(R.layout.fragment_ranklist, container, false);
 
+        mListView = (ListView) v.findViewById(R.id.rank_list);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        temp = mConnectionManager.getXmlList();
-        if (temp == null)
-            Log.i("XML TEST1 !!", "It's null!!");
-        else
-            Log.i("XML TEST1 !!", "성공");
+        return v;
     }
 
     public void setAge(String s){
@@ -142,43 +131,26 @@ public class Ranklist extends Fragment {
                         +", mission, price, max_token, max_output"
                         +" FROM "+gender_query+" NATURAL JOIN car ORDER BY `"+age_query+"` DESC LIMIT 10";
 
-                mConnectionManager = new ConnectionManager(query, RECOMMENDLIST_REQUEST);
+                mConnectionManager = new ConnectionManager(getActivity(), query, RECOMMENDLIST_REQUEST);
                 mConnectionManager.execute();
 
                 Log.i("What first?", "fucks");
 
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        temp = mConnectionManager.getXmlList();
+                        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp);
+                        mListView.setAdapter(mAdapter);
+                    }
+                }, 2000);
 
-                temp = mConnectionManager.getXmlList();
 
-                mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp);
 //        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, DatasetList);
                 // use a linear layout manager
-
-                mListView.setAdapter(mAdapter);
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_ranklist, container, false);
-
-        mListView = (ListView) v.findViewById(R.id.rank_list);
-
-        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp);
-//        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, DatasetList);
-        // use a linear layout manager
-
-        mListView.setAdapter(mAdapter);
-
-        return v;
     }
 
     private class CustomAdapter extends ArrayAdapter<DataSet> {
