@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -101,7 +102,6 @@ public class MainActivity extends Activity {
         String query1 = "SELECT * FROM inform_table";
         Cursor cursor = handler.selectInform(query1);
         if (cursor.moveToNext()) {
-            age = cursor.getInt(cursor.getColumnIndex("age"));
             String query2 = "UPDATE inform_table SET age = "+age+", gender = '"+gender+"', cost="+cost+";";
             handler.update(query2);
         }
@@ -109,6 +109,12 @@ public class MainActivity extends Activity {
             handler.insertInform(age, gender, cost); // db에 insert
         }
 
+        Cursor tmp = handler.selectInform(query1);
+        while(tmp.moveToNext()) {
+            Log.i("DB: ", tmp.getInt(tmp.getColumnIndex("age")) + "");
+            Log.i("DB: ", tmp.getString(tmp.getColumnIndex("gender")));
+            Log.i("DB: ", tmp.getInt(tmp.getColumnIndex("cost")) + "");
+        }
         testBtnOK.setText("OK: true");
         Intent intent = new Intent(MainActivity.this, ListActivity.class);
         intent.putExtra("isSkip", false);

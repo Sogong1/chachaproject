@@ -20,12 +20,6 @@
             android:textColor="#FFFFFF"
             android:textSize="30dp"
             android:layout_weight="5"/>
-        <Button
-            android:id="@+id/fv_addBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="추가"
-            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout

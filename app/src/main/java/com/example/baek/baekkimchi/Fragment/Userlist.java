@@ -158,7 +158,8 @@ public class Userlist extends Fragment {
                     public void run() {
                         mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp, imgViewList);
                         mListView.setAdapter(mAdapter);
-                        setTestView(age, gender, query, temp.get(0).getXml());
+                        if(temp.size() != 0)
+                            setTestView(age, gender, query, temp.get(0).getXml());
                     }
                 }, 3000);
             }

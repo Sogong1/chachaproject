@@ -51,6 +51,7 @@ public class Ranklist extends Fragment {
     private ArrayList<Bitmap> bitmapList = new ArrayList<Bitmap>();
     private String query_age;
     private String query_gender;
+    private String where="";
 
     private ArrayList<String> urlList = new ArrayList<String>();
     private ArrayList<ImageView> imgViewList = new ArrayList<ImageView>();
@@ -71,6 +72,9 @@ public class Ranklist extends Fragment {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
         isSkip = bundle.getBoolean("isSkip");
+        if (bundle.getString("where") != null)
+            where = bundle.getString("where");
+Log.i("where:",where);
         LinearLayout comboBox = (LinearLayout)getActivity().findViewById(R.id.recommend_combo);
         comboBox.setVisibility(View.VISIBLE);
 
@@ -185,7 +189,7 @@ public class Ranklist extends Fragment {
                 query = "SELECT car_index, company_name, car_name, car_model, type, engene_type, supply_method"
                         + ", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
                         + ", mission, price, max_token, max_output, img"
-                        + " FROM (" + gender_query + " NATURAL JOIN car c) NATURAL JOIN company ORDER BY `" + gender_query + "`.`" + age_query + "` DESC, `c`.`price` ASC LIMIT 10";
+                        + " FROM (" + gender_query + " NATURAL JOIN car c) NATURAL JOIN company " + where + "ORDER BY `" + gender_query + "`.`" + age_query + "` DESC, `c`.`price` ASC LIMIT 10";
 
                 mConnectionManager = new ConnectionManager(getActivity(), query, RECOMMENDLIST_REQUEST);
                 mConnectionManager.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

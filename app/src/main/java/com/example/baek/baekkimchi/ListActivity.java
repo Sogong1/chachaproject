@@ -36,12 +36,12 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     public final static int FRAGMENT_TWO = 1;
 
     private Button bt_return, bt_filter;
-    private Button bt_oneFragment, bt_twoFragment;
+    private Button bt_userList, bt_recoList;
 
     private int age, cost;
     private String gender;
-    private String query;
-    private boolean isSkip;
+    private String query, where;
+    private boolean isSkip, isRecommend;
     private CharSequence[] typeItem = {"소형", "중형", "준중","대", "스포츠", "경형"};
     private CharSequence[] missionItem = {"자동", "수동"};
     private CharSequence[] fuelTypeItem = {"가솔린", "디젤"};
@@ -51,18 +51,18 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         Intent intent = getIntent();
-        if(intent.getExtras() == null){
-            isSkip = false;
-            age = 20;
-            gender = "남자";
-            cost = 2100;
-        }
-        else {
+//        if(intent.getExtras() == null){
+//            isSkip = false;
+//            age = 20;
+//            gender = "남자";
+//            cost = 2100;
+//        }
+//        else {
             isSkip = intent.getExtras().getBoolean("isSkip");
             age = intent.getExtras().getInt("age");
             gender = intent.getExtras().getString("gender");
             cost = intent.getExtras().getInt("cost");
-        }
+//        }
 
         query = "select car_index, company_name, car_name, car_model, type, engene_type, supply_method"
                 +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
@@ -71,10 +71,10 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 "order by c.price ASC LIMIT 10";
 
 
-        bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
-        bt_oneFragment.setOnClickListener(this);
-        bt_twoFragment = (Button) findViewById(R.id.bt_twoFragment);
-        bt_twoFragment.setOnClickListener(this);
+        bt_userList = (Button) findViewById(R.id.bt_oneFragment);
+        bt_userList.setOnClickListener(this);
+        bt_recoList = (Button) findViewById(R.id.bt_twoFragment);
+        bt_recoList.setOnClickListener(this);
 
         bt_filter = (Button) findViewById(R.id.btn_filter);
         bt_filter.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +97,8 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 finish();
             }
         });
+
+   
 
         if (isSkip) {
             mCurrentFragmentIndex = FRAGMENT_TWO;
@@ -130,10 +132,10 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
 
         switch (idx) {
             case FRAGMENT_ONE:
-                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_select);
-                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_unselc);
+                bt_userList.setBackgroundResource(R.drawable.title_mylist_select);
+                bt_recoList.setBackgroundResource(R.drawable.title_rec_unselc);
 
-
+                isRecommend = false;
 
                 Bundle bundle1 = new Bundle();
 
@@ -148,11 +150,14 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 newFragment.setArguments(bundle1);
                 break;
             case FRAGMENT_TWO:
-                bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_unselc);
-                bt_twoFragment.setBackgroundResource(R.drawable.title_rec_select);
+                bt_userList.setBackgroundResource(R.drawable.title_mylist_unselc);
+                bt_recoList.setBackgroundResource(R.drawable.title_rec_select);
+
+                isRecommend = true;
 
                 Bundle bundle2 = new Bundle();
                 bundle2.putBoolean("isSkip", true);
+                bundle2.putString("where", where);
                 newFragment = new Ranklist();
                 newFragment.setArguments(bundle2);
                 break;
@@ -308,8 +313,9 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 selectedGroup = "fuel_type";
 
             }else if(v == okButton) {
-                if (isSkip) {
+                if (isRecommend) {
                     mCurrentFragmentIndex = FRAGMENT_TWO;
+                    where = "where " + selectedGroup + " = \"" + selectedItem + "\" ";
                 }
                 else {
                     mCurrentFragmentIndex = FRAGMENT_ONE;
