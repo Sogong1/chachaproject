@@ -1,6 +1,8 @@
 package com.example.baek.baekkimchi;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,10 +11,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -36,6 +42,9 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
     private String gender;
     private String query;
     private boolean isSkip;
+    private CharSequence[] typeItem = {"소형", "중형", "준중","대", "스포츠", "경형"};
+    private CharSequence[] missionItem = {"자동", "수동"};
+    private CharSequence[] fuelTypeItem = {"가솔린", "디젤"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +64,12 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
             cost = intent.getExtras().getInt("cost");
         }
 
-        query = "select * from car where price >= \""+cost+"\"-100 and price <= \""+cost+"\"+100 LIMIT 10";
+        query = "select car_index, company_name, car_name, car_model, type, engene_type, supply_method"
+                +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"
+                +", mission, price, max_token, max_output, img " +
+                "from car c NATURAL JOIN company where price >= \""+cost+"\"-100 and price <= \""+cost+"\"+100 " +
+                "order by c.price ASC LIMIT 10";
+
 
         bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
         bt_oneFragment.setOnClickListener(this);
@@ -66,7 +80,9 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         bt_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAlertDialog();
+                CustomDialog filterDialog = new CustomDialog(ListActivity.this, "필터 선택");
+                filterDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL);
+                filterDialog.show();
             }
         });
 
@@ -74,7 +90,10 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         bt_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ListActivity.this, MainActivity.class));
+
+                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                intent.putExtra("callAgain", true);
+                startActivity(intent);
                 finish();
             }
         });
@@ -114,10 +133,17 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
                 bt_oneFragment.setBackgroundResource(R.drawable.title_mylist_select);
                 bt_twoFragment.setBackgroundResource(R.drawable.title_rec_unselc);
 
+
+
                 Bundle bundle1 = new Bundle();
-                bundle1.putString("age", age+"");
+
+                bundle1.putString("age", age + "");
                 bundle1.putString("gender", gender);
                 bundle1.putString("query", query);
+
+                Log.i("send_test_listA_age", age+"");
+                Log.i("send_test_listA_gen", gender);
+
                 newFragment = new Userlist();
                 newFragment.setArguments(bundle1);
                 break;
@@ -182,47 +208,121 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         return super.onOptionsItemSelected(item);
     }
 
-    public void setAlertDialog(){
-        final CharSequence[] itemsMap = {"타입","연료", "변속기"};
-        final CharSequence[] items = {"type", "fuel_type", "mission"};
-        final ArrayList<Integer> selectedItemIndexList = new ArrayList<Integer>();
+    class CustomDialog extends Dialog implements View.OnClickListener {
+        private RadioGroup type_group, mission_group, fuel_group;
+        private TextView type_text, mission_text, fuel_text;
+        private Button okButton;
+        private Button cancelButton;
+        private Context mContext;
+        private String mTitle;
+        private TextView mTitleView, filter_text;
+        private String selectedGroup, selectedItem;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
-        // 여기서 부터는 알림창의 속성 설정
-        builder.setTitle("필터를 선택하세요")        // 제목 설정
-                .setSingleChoiceItems(itemsMap, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.i("index : ", which + "");
-                        selectedItemIndexList.add(which);
+        public CustomDialog(Context context, String title) {
+            super(context , android.R.style.Theme_DeviceDefault_Dialog);
+            this.mTitle = title;
+            this.mContext = context;
+            /** 'Window.FEATURE_NO_TITLE' - Used to hide the title */
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.customdialog);
+
+            mTitleView = (TextView) findViewById(R.id.title_text);
+            mTitleView.setText(mTitle);
+
+            filter_text = (TextView) findViewById(R.id.filter_text);
+
+            type_text = (TextView) findViewById(R.id.type_text);
+            type_text.setOnClickListener(this);
+            mission_text = (TextView) findViewById(R.id.mission_text);
+            mission_text.setOnClickListener(this);
+            fuel_text = (TextView) findViewById(R.id.fuel_text);
+            fuel_text.setOnClickListener(this);
+
+            type_group = (RadioGroup) findViewById(R.id.type_group);
+            type_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    // checkedId is the RadioButton selected
+                    if(checkedId > -1) {
+                        RadioButton tmp = ((RadioButton) findViewById(checkedId));
+                        filter_text.setText("필터 : " + tmp.getText());
+                        selectedItem = tmp.getText().toString();
                     }
-                })
-                .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    // 확인 버튼 클릭시 설정
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Log.i("index : ", selectedItemIndexList.get(0) + "");
-                        query = "select * from car group by \"" + items[selectedItemIndexList.get(0)] + "\", price having price >= \"" + cost + "\"-100 and price <= \"" + cost + "\"+100 LIMIT 10";
-
-                        if (isSkip) {
-                            mCurrentFragmentIndex = FRAGMENT_TWO;
-                        } else {
-                            mCurrentFragmentIndex = FRAGMENT_ONE;
-                        }
-                        fragmentReplace(mCurrentFragmentIndex);
-
-                        dialog.dismiss();
+                }
+            });
+            mission_group = (RadioGroup) findViewById(R.id.mission_group);
+            mission_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+            {
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    // checkedId is the RadioButton selected
+                    if (checkedId > -1) {
+                        RadioButton tmp = ((RadioButton) findViewById(checkedId));
+                        filter_text.setText("필터 : " + tmp.getText());
+                        selectedItem = tmp.getText().toString();
                     }
-                })
-                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    // 취소 버튼 클릭시 설정
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
+                }
+            });
+            fuel_group = (RadioGroup) findViewById(R.id.fuel_group);
+            fuel_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+            {
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    // checkedId is the RadioButton selected
+                    if (checkedId > -1) {
+                        RadioButton tmp = ((RadioButton) findViewById(checkedId));
+                        filter_text.setText("필터 : " + tmp.getText());
+                        selectedItem = tmp.getText().toString();
                     }
-                });
+                }
+            });
+            okButton = (Button)findViewById(R.id.button1);
+            cancelButton = (Button)findViewById(R.id.button2);
 
-        AlertDialog dialog = builder.create();    // 알림창 객체 생성
-        dialog.show();    // 알림장 띄우기
+            okButton.setOnClickListener(this);
+            cancelButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(v == type_text) {
+                type_group.setVisibility(RadioGroup.VISIBLE);
+                mission_group.setVisibility(RadioGroup.GONE);
+                fuel_group.setVisibility(RadioGroup.GONE);
+                mission_group.clearCheck();
+                fuel_group.clearCheck();
+                selectedGroup = "type";
+
+            }else if(v==mission_text) {
+                type_group.setVisibility(RadioGroup.GONE);
+                mission_group.setVisibility(RadioGroup.VISIBLE);
+                fuel_group.setVisibility(RadioGroup.GONE);
+                type_group.clearCheck();
+                fuel_group.clearCheck();
+                selectedGroup = "mission";
+
+            }else if(v==fuel_text) {
+                type_group.setVisibility(RadioGroup.GONE);
+                mission_group.setVisibility(RadioGroup.GONE);
+                fuel_group.setVisibility(RadioGroup.VISIBLE);
+                type_group.clearCheck();
+                mission_group.clearCheck();
+                selectedGroup = "fuel_type";
+
+            }else if(v == okButton) {
+                if (isSkip) {
+                    mCurrentFragmentIndex = FRAGMENT_TWO;
+                }
+                else {
+                    mCurrentFragmentIndex = FRAGMENT_ONE;
+                    query = "select * from car where price >= \"" + cost + "\"-100 and price <= \"" + cost + "\"+100 and " + selectedGroup + " = \"" + selectedItem + "\" LIMIT 10";
+                }
+
+                fragmentReplace(mCurrentFragmentIndex);
+
+                dismiss();
+            } else if(v == cancelButton) {
+                dismiss();
+            }
+        }
     }
+
 }

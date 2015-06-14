@@ -21,7 +21,7 @@ import com.example.baek.baekkimchi.Database.DBManagerHandler;
 
 public class MainActivity extends Activity {
 
-    private TextView testBtnOK, testBtnSkip;
+    private TextView testBtnOK, testBtnSkip, calledAgain;
     private EditText input_age, input_cost;
     private RadioGroup input_gender;
     private DBManagerHandler handler;
@@ -38,6 +38,11 @@ public class MainActivity extends Activity {
         input_cost = (EditText) findViewById(R.id.input_cost);
         testBtnOK = (TextView)findViewById(R.id.testBtnOK);
         testBtnSkip = (TextView)findViewById(R.id.testBtnSkip);
+        calledAgain = (TextView)findViewById(R.id.called_again);
+
+        Intent intent = getIntent();
+        if(intent.getExtras() != null) calledAgain.setText("true");
+        else calledAgain.setText("false");
 
     }
 

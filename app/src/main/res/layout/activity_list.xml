@@ -127,7 +127,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -142,6 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
+                    android:visibility="gone"
                     android:text="null"/>
             </LinearLayout>
             <LinearLayout
@@ -158,6 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
+                    android:visibility="gone"
                     android:text="null"/>
             </LinearLayout>
             <LinearLayout
@@ -174,6 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
+                    android:visibility="gone"
                     android:text="null"/>
             </LinearLayout>
             <LinearLayout
@@ -184,13 +188,94 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
+
                     android:text="result XML : "/>
                 <TextView
                     android:id="@+id/xml_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:textColor="#FFFFFF"
                     android:text="null"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:id="@+id/image_test1"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test2"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test3"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test4"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test5"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:id="@+id/image_test6"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test7"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test8"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test9"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                    <ImageView
+                        android:id="@+id/image_test10"
+                        android:tag="image_tag"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/loading"/>
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

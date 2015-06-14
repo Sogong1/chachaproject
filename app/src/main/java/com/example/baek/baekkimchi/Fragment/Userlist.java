@@ -1,11 +1,11 @@
 package com.example.baek.baekkimchi.Fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,14 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.baek.baekkimchi.Connection.ConnectionManager;
+import com.example.baek.baekkimchi.Connection.CounterUpdateManager;
+import com.example.baek.baekkimchi.Connection.DownloadImagesTask;
 import com.example.baek.baekkimchi.DetailViewActivity;
 import com.example.baek.baekkimchi.R;
 
@@ -38,6 +38,7 @@ public class Userlist extends Fragment {
     private String gender;
     private String query;
     private Bundle bundle;
+    private DownloadImagesTask mDownloadImagesTask;
     private ConnectionManager mConnectionManager;
 
     private TextView age_check;
@@ -48,6 +49,21 @@ public class Userlist extends Fragment {
     private int USERLIST_REQUEST = 1000;
     private int RECOMMENDLIST_REQUEST = 2000;
     private ArrayList<DataSet> temp;
+    private ArrayList<String> urlList = new ArrayList<String>();
+    private ArrayList<ImageView> imgViewList = new ArrayList<ImageView>();
+
+    private ImageView testImg1;
+    private ImageView testImg2;
+    private ImageView testImg3;
+    private ImageView testImg4;
+    private ImageView testImg5;
+    private ImageView testImg6;
+    private ImageView testImg7;
+    private ImageView testImg8;
+    private ImageView testImg9;
+    private ImageView testImg10;
+
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,21 +72,42 @@ public class Userlist extends Fragment {
         gender = bundle.getString("gender");
         query = bundle.getString("query");
         mConnectionManager = new ConnectionManager(getActivity(), query, USERLIST_REQUEST);
+
         LinearLayout comboBox = (LinearLayout) getActivity().findViewById(R.id.recommend_combo);
         comboBox.setVisibility(View.GONE);
-
-        mConnectionManager.execute();
+//        if(mConnectionManager.isCancelled() == false)
+//            mConnectionManager.cancel(true);
+        mConnectionManager.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        Log.i("send_test_userlist_age", age);
+        Log.i("send_test_userlist_gen", gender);
 
         initTestView();
+        initTestImgView();
 
+    }
 
-//        Log.i("tnstj :", "5");
-////        temp = mConnectionManager.getXmlList();
-//        Log.i("tnstj :", "6");
-//        if (temp == null)
-//            Log.i("XML TEST1 !!", "It's null!!");
-//        else
-//            Log.i("XML TEST1 !!", "성공");
+    public void initTestImgView(){
+        testImg1 = (ImageView)getActivity().findViewById(R.id.image_test1);
+        testImg2 = (ImageView)getActivity().findViewById(R.id.image_test2);
+        testImg3 = (ImageView)getActivity().findViewById(R.id.image_test3);
+        testImg4 = (ImageView)getActivity().findViewById(R.id.image_test4);
+        testImg5 = (ImageView)getActivity().findViewById(R.id.image_test5);
+        testImg6 = (ImageView)getActivity().findViewById(R.id.image_test6);
+        testImg7 = (ImageView)getActivity().findViewById(R.id.image_test7);
+        testImg8 = (ImageView)getActivity().findViewById(R.id.image_test8);
+        testImg9 = (ImageView)getActivity().findViewById(R.id.image_test9);
+        testImg10 = (ImageView)getActivity().findViewById(R.id.image_test10);
+
+        imgViewList.add(testImg1);
+        imgViewList.add(testImg2);
+        imgViewList.add(testImg3);
+        imgViewList.add(testImg4);
+        imgViewList.add(testImg5);
+        imgViewList.add(testImg6);
+        imgViewList.add(testImg7);
+        imgViewList.add(testImg8);
+        imgViewList.add(testImg9);
+        imgViewList.add(testImg10);
     }
 
     public void initTestView(){
@@ -86,6 +123,14 @@ public class Userlist extends Fragment {
         xml_check.setText(xml);
     }
 
+    public void initUrlList(ArrayList<DataSet> temp, ArrayList<ImageView> imgViewList){
+        String url = "http://sogong.besaba.com/s_img/";
+        for(int i = 0; i< temp.size(); i++)
+            urlList.add(url+temp.get(i).getImg());
+        for(int i = 0; i< temp.size(); i++)
+            imgViewList.get(i).setTag(urlList.get(i));
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,29 +138,54 @@ public class Userlist extends Fragment {
         View v = inflater.inflate(R.layout.fragment_ranklist, container, false);
 
         mListView = (ListView) v.findViewById(R.id.rank_list);
-
+        temp = mConnectionManager.getXmlList();
+//        setBitmap(getBitmap(temp));
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 temp = mConnectionManager.getXmlList();
-                mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp);
-                mListView.setAdapter(mAdapter);
+                mDownloadImagesTask = new DownloadImagesTask();
+                initUrlList(temp, imgViewList);
+                for(int i = 0; i< mConnectionManager.getItemSize(); i++) {
+                    mDownloadImagesTask = new DownloadImagesTask(getActivity());
+                    mDownloadImagesTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imgViewList.get(i));
+                }
+
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter = new CustomAdapter(getActivity(), R.layout.item_card, temp, imgViewList);
+                        mListView.setAdapter(mAdapter);
+                        setTestView(age, gender, query, temp.get(0).getXml());
+                    }
+                }, 3000);
             }
-        }, 2000);
-
-//        setTestView(age, gender, query, temp.get(0).getXml());
-
+        }, 3000);
         return v;
+    }
+
+    public void setImgFromTestView(ImageView from, ImageView to){
+        Drawable d = from.getDrawable();
+        Bitmap bp = ((BitmapDrawable)d).getBitmap();
+        to.setImageBitmap(bp);
+    }
+
+    public void onStop(){
+        mConnectionManager.cancel(true);
+        super.onStop();
     }
 
     private class CustomAdapter extends ArrayAdapter<DataSet> {
 
         private ArrayList<DataSet> mDataset;
+        private ArrayList<ImageView> mImageView;
 
-        public CustomAdapter(Context context, int textViewResourceId, ArrayList<DataSet> items) {
+        public CustomAdapter(Context context, int textViewResourceId, ArrayList<DataSet> items, ArrayList<ImageView> mImageView) {
             super(context, textViewResourceId, items);
             this.mDataset = items;
+            this.mImageView = mImageView;
         }
 
         public int getItemCount() {
@@ -145,16 +215,23 @@ public class Userlist extends Fragment {
             TextView Car_price = (TextView) v.findViewById(R.id.Car_price);
             Car_price.setText(mDataset.get(position).getPrice() + "만원");
 
-            DataSet clickedDataSet = mDataset.get(position);
+            ImageView cardImg = (ImageView) v.findViewById(R.id.car_image);
+            setImgFromTestView(mImageView.get(position), cardImg);
 
+            DataSet clickedDataSet = mDataset.get(position);
             final Intent intent = new Intent(getActivity(), DetailViewActivity.class);
             intent.putExtra("mDataset",clickedDataSet);
+            final int temp_position = position;
 
             // 리스트 아이템을 터치 했을 때 이벤트 발생
             v.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
+                    Log.i("index_test", mDataset.get(temp_position).getIndex());
+                    Log.i("send_test_age", age);
+                    Log.i("send_test_gender", gender);
+                    new CounterUpdateManager(mDataset.get(temp_position).getIndex(), age, gender).execute();
                     startActivity(intent);
                 }
             });

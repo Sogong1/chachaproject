@@ -22,13 +22,14 @@
             android:background="@drawable/background_normal">
             <TextView
                 android:id="@+id/text_intro"
-                android:text="@string/hello_world"
+                android:text="사용자의 정보를 입력해 주세요.\n입력한 정보를 바탕으로 \n자동차를 추천해드립니다.\n\n본 정보는 언제든 수정할 수 있으며, \n정보를 입력하지 않아도 연령별, 성별로 \n가장 많이 열람된 리스트를 조회할 수 있습니다.\n\n이 정보는 서버에 저장되지 않습니다. "
+                android:gravity="center"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:paddingLeft="100dp"
                 android:paddingTop="15dp"
+                android:paddingBottom="20dp"
                 android:layout_weight="1"
                 android:textColor="#FFFFFF"
                 android:background="@drawable/explain_background"/>
@@ -195,16 +196,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="invisible">
-        <TextView
-            android:id="@+id/testBtnOK"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="OK: false"/>
-        <TextView
-            android:id="@+id/testBtnSkip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Skip: false"/>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/testBtnOK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK: false"/>
+            <TextView
+                android:id="@+id/testBtnSkip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skip: false"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="called again"/>
+            <TextView
+                android:id="@+id/called_again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="null"/>
+        </LinearLayout>
+    </LinearLayout>
+
 
 </FrameLayout>

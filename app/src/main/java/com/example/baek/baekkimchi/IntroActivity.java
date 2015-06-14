@@ -70,6 +70,12 @@ public class IntroActivity extends Activity {
                     String query = "SELECT * FROM inform_table";
                     Cursor cursor = handler.selectInform(query);
                     if (cursor.moveToNext()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dbCheck.setText("true");
+                            }
+                        });
                         Intent intent = new Intent(IntroActivity.this, ListActivity.class);
                         intent.putExtra("isSkip", false);
                         intent.putExtra("age", cursor.getInt(cursor.getColumnIndex("age")));
@@ -79,6 +85,12 @@ public class IntroActivity extends Activity {
                         startActivity(intent);
                         finish();
                     } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dbCheck.setText("false");
+                            }
+                        });
                         startActivity(new Intent(IntroActivity.this, MainActivity.class));
                         finish();
                     }

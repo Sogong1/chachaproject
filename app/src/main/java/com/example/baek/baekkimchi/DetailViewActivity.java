@@ -2,12 +2,16 @@ package com.example.baek.baekkimchi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.baek.baekkimchi.Connection.DownloadImagesTask;
 import com.example.baek.baekkimchi.dataset.DataSet;
 
 import java.util.ArrayList;
@@ -15,6 +19,7 @@ import java.util.ArrayList;
 
 public class DetailViewActivity extends Activity {
     private TextView name;
+    private TextView company;
     private TextView model;
     private TextView price;
     private TextView type;
@@ -29,19 +34,22 @@ public class DetailViewActivity extends Activity {
     private TextView max_token;
     private TextView max_output;
     private DataSet mdataSet;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
         initTextView();
-        mdataSet = (DataSet)getIntent().getSerializableExtra("mDataset");
-
-        setTextView();
+        if(getIntent().getExtras() != null){
+            mdataSet = (DataSet)getIntent().getSerializableExtra("mDataset");
+            setTextView();
+        }
     }
 
     public void initTextView(){
         name = (TextView)findViewById(R.id.Car_name);
+        company = (TextView)findViewById(R.id.Car_company);
         model = (TextView)findViewById(R.id.Car_model);
         price = (TextView)findViewById(R.id.Car_price);
         type = (TextView)findViewById(R.id.type);
@@ -55,10 +63,12 @@ public class DetailViewActivity extends Activity {
         mission = (TextView)findViewById(R.id.mission);
         max_token = (TextView)findViewById(R.id.max_token);
         max_output = (TextView)findViewById(R.id.max_output);
+        imageView = (ImageView)findViewById(R.id.detail_img);
     }
 
     public void setTextView(){
         name.setText(mdataSet.getName());
+        company.setText(mdataSet.getCompanyName());
         model.setText(mdataSet.getModel());
         price.setText(mdataSet.getPrice()+"");
         type.setText(mdataSet.getType());
@@ -72,6 +82,11 @@ public class DetailViewActivity extends Activity {
         mission.setText(mdataSet.getMission());
         max_token.setText(mdataSet.getMax_token());
         max_output.setText(mdataSet.getMax_output());
+
+        imageView.setTag("http://sogong.besaba.com/img/" + mdataSet.getImg());
+        DownloadImagesTask downloadImagesTask = new DownloadImagesTask(this);
+        downloadImagesTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imageView);
+
     }
 
 

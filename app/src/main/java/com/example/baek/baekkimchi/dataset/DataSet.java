@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class DataSet implements Serializable {
     private String index;
     private String name;
+    private String company;
     private String model;
     private int price;
     private String type;
@@ -22,13 +23,15 @@ public class DataSet implements Serializable {
     private String mission;
     private String max_token;
     private String max_output;
+    private String img;
     private String xml;
 
-    public DataSet(String index, String name, String model, int price, String type, String engine_type, String supply_method
+    public DataSet(String index, String name, String company, String model, int price, String type, String engine_type, String supply_method
             , String displacement, String fuel_type, String fuel_economy, String riding_personal, String drive_type
-            , String mission, String max_token, String max_output, String xml) {
+            , String mission, String max_token, String max_output, String xml, String img) {
         this.index = index;
         this.name = name;
+        this.company = company;
         this.model = model;
         this.price = price;
         this.type = type;
@@ -43,6 +46,7 @@ public class DataSet implements Serializable {
         this.max_token = max_token;
         this.max_output = max_output;
         this.xml = xml;
+        this.img = img;
     }
 
     public String getIndex(){ return index; }
@@ -54,6 +58,8 @@ public class DataSet implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getCompanyName(){ return this.company; }
 
     public String getModel() {
         return this.model;
@@ -86,5 +92,7 @@ public class DataSet implements Serializable {
     public String getMax_output() { return this.max_output; }
 
     public String getXml(){ return this.xml; }
+
+    public String getImg(){ return this.img; }
 
 }

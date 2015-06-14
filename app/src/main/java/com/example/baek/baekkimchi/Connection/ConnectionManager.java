@@ -3,9 +3,11 @@ package com.example.baek.baekkimchi.Connection;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.baek.baekkimchi.R;
 import com.example.baek.baekkimchi.dataset.DataSet;
 
 import org.apache.http.HttpEntity;
@@ -48,12 +50,15 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     HttpClient client;
     HttpResponse res;
 
+    private boolean isFinished = false;
+
     private String age;
     private String gender;
     private String cost;
 
     private String index[];
     private String carNameList[];
+    private String companyList[];
     private String modelList[];
     private String priceList[];
     private String type[];
@@ -67,9 +72,11 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
     private String mission[];
     private String max_token[];
     private String max_output[];
+    private String img[];
 
     private ArrayList<DataSet> xmlList;
     private int state;
+    private int itemSize;
     private int USERLIST_REQUEST = 1000;
     private int RECOMMENDLIST_REQUEST = 2000;
 
@@ -90,15 +97,20 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         this.mContext = context;
     }
 
+    protected void onCancelled(){
+        super.onCancelled();
+    }
+
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
         dialog = new ProgressDialog(mContext);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("로딩중입니다..");
         Log.i("tnstj : ", "111");
         // show dialog
         dialog.show();
-        super.onPreExecute();
+
     }
 
     @Override
@@ -106,11 +118,18 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         // TODO Auto-generated method stub
         //이곳에서 UI를 변경하면 에러
         if(state == USERLIST_REQUEST)
-            url = "http://172.200.153.146/system/get_list.php";
+            url = "http://sogong.besaba.com/system/get_list.php";
         else if(state == RECOMMENDLIST_REQUEST)
-            url = "http://172.200.153.146/system/get_recommend.php";
+            url = "http://sogong.besaba.com/system/get_recommend.php";
         else
-            url = "http://172.200.153.146/system/get_list.php";
+            url = "http://sogong.besaba.com/system/get_list.php";
+
+//        if(state == USERLIST_REQUEST)
+//            url = "http://172.200.153.146/system/get_list.php";
+//        else if(state == RECOMMENDLIST_REQUEST)
+//            url = "http://172.200.153.146/system/get_recommend.php";
+//        else
+//            url = "http://172.200.153.146/system/get_list.php";
 
         XMLMessage = "";    //final result XML
         message = "";       //temp message buffer
@@ -124,12 +143,7 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         XMLMessage = getMessage(message);
 
         Log.i("tnstj : ", "222");
-        try {
-            //asyncDialog.setProgress(i * 30);
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         Log.i("tnstj : ", "333");
 
         return XMLMessage;
@@ -163,9 +177,10 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
                 }
             }
             im.close();
-            Log.i("XML result1 : ",message);
+            Log.i("XML result1 : ", message);
 
             setXmlList(parseXML(message));
+            setFinish();
 
             return message;
         }catch (UnsupportedEncodingException e) {
@@ -177,6 +192,13 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         return null; //오류시 error
     }
 
+    public void setItemSize(int i){
+        itemSize = i;
+    }
+
+    public int getItemSize(){
+        return itemSize;
+    }
     public ArrayList<DataSet> parseXML(String xml){
         //get XML and parse it. After that draw list.
 
@@ -204,6 +226,8 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
 
         ArrayList<DataSet> xmllist = new ArrayList<DataSet>();
 
+        setItemSize(child.getLength());
+
         for(int i = 0; i< child.getLength();i++){
             NodeList childList = child.item(i).getChildNodes();
             for(int j = 0;j<childList.getLength();j++){
@@ -213,17 +237,17 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
                 setValue(element, i, text);
             }
 
-            xmllist.add(new DataSet(index[i],carNameList[i], modelList[i], Integer.parseInt(priceList[i]), type[i]
+            xmllist.add(new DataSet(index[i],carNameList[i],companyList[i],modelList[i], Integer.parseInt(priceList[i]), type[i]
                     , engine_type[i], supply_method[i], displacement[i], fuel_type[i], fuel_economy[i]
-                    , riding_personal[i], drive_type[i], mission[i], max_token[i], max_output[i], temp));
+                    , riding_personal[i], drive_type[i], mission[i], max_token[i], max_output[i], temp, img[i]));
 
             Log.i("XMLTest_dataSet"+i,xmllist.get(i).getIndex());
         }
+
 //
 //        xmllist[0] = carNameList;
 //        xmllist[1] = modelList;
 //        xmllist[2] = priceList;
-
         return xmllist;
     }
 
@@ -235,9 +259,17 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         return xmlList;
     }
 
+    public boolean checkFinish(){return isFinished;}
+
+    public void setFinish(){this.isFinished = true;}
+
+    public void dismissProgress(){
+        dialog.dismiss();
+    }
     public void initList(int n){
         index = new String[n];
         carNameList = new String[n];
+        companyList = new String[n];
         modelList = new String[n];
         priceList = new String[n];
         type = new String[n];
@@ -251,11 +283,13 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         mission = new String[n];
         max_token = new String[n];
         max_output = new String[n];
+        img = new String[n];
     }
 
     public void setValue(String element, int position, String text){
         if(element.equals("car_index")) index[position] = text;
         else if(element.equals("name")) carNameList[position] = text;
+        else if(element.equals("company_name")) companyList[position] = text;
         else if(element.equals("model")) modelList[position] = text;
         else if(element.equals("price")) priceList[position] = text;
         else if(element.equals("type")) type[position] = text;
@@ -269,17 +303,22 @@ public class ConnectionManager extends AsyncTask<Void, Void, String> {
         else if(element.equals("mission")) mission[position] = text;
         else if(element.equals("max_token")) max_token[position] = text;
         else if(element.equals("max_output")) max_output[position] = text;
+        else if(element.equals("img")) img[position] = text;
 
     }
 
 
     protected void onPostExecute(String result){
         //작업 마친후 내용. UI는 여기서 변경할 것,
-        Log.i("tnstj : ", "444");
-        dialog.dismiss();
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 3000);
+
         super.onPostExecute(result);
-//        Log.i("XML result2 : ", result);
-//        setXmlList(parseXML(result));
     }
 
 }
