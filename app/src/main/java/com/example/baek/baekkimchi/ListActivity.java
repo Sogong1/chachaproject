@@ -51,18 +51,18 @@ public class ListActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         Intent intent = getIntent();
-//        if(intent.getExtras() == null){
-//            isSkip = false;
-//            age = 20;
-//            gender = "남자";
-//            cost = 2100;
-//        }
-//        else {
+        if(intent.getExtras() == null){
+            isSkip = false;
+            age = 20;
+            gender = "남자";
+            cost = 2100;
+        }
+        else {
             isSkip = intent.getExtras().getBoolean("isSkip");
             age = intent.getExtras().getInt("age");
             gender = intent.getExtras().getString("gender");
             cost = intent.getExtras().getInt("cost");
-//        }
+        }
 
         query = "select car_index, company_name, car_name, car_model, type, engene_type, supply_method"
                 +", displacement, fuel_type, fuel_economy, riding_personnal, drive_type"

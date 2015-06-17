@@ -64,7 +64,7 @@ public class DownloadImagesTask extends AsyncTask<ImageView, Void, Bitmap> {
             public void run() {
                 dialog.dismiss();
             }
-        }, 3000);
+        }, 2000);
         isFinished = true;
     }
 

@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Detail View"
+            android:paddingLeft="10dp"
             android:textColor="#FFFFFF"
             android:textSize="30dp"
             android:layout_weight="5"/>
